@@ -21,17 +21,17 @@ namespace ECommerce.DAL.Repositories
             }
         }
 
-        public void Dispose()
-        {
-            if(_db != null)
-                _db.Dispose();
-
-            userRepo = null;
-        }
-
         public async Task SaveAsync()
         {
             await _db.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            if (_db != null)
+                _db.Dispose();
+
+            userRepo = null;
         }
     }
 }
