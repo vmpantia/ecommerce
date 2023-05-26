@@ -7,5 +7,8 @@ namespace ECommerce.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        public UserController()
+        {
+        }
     }
 }

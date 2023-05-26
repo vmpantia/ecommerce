@@ -1,10 +1,11 @@
-﻿using ECommerce.BAL.Models.DTOs;
+﻿using ECommerce.BAL.Contractors;
+using ECommerce.BAL.Models.DTOs;
 using ECommerce.DAL.Contractors;
 using ECommerce.DAL.DataAccess.Entities;
 
 namespace ECommerce.BAL.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IUnitOfWork _uow;
         public UserService(IUnitOfWork uow) => _uow = uow;
@@ -33,7 +34,7 @@ namespace ECommerce.BAL.Services
         public async Task SaveUserAsync(UserDTO data)
         {
             var isAdd = data.InternalID == Guid.Empty;
-            if(isAdd)
+            if (isAdd)
                 await _uow.UserRepository.InsertAsync(new User
                 {
                     InternalID = Guid.NewGuid(),
@@ -47,8 +48,8 @@ namespace ECommerce.BAL.Services
                     ModifiedDate = null
                 });
             else
-                await _uow.UserRepository.UpdateAsync(data.InternalID, 
-                    new 
+                await _uow.UserRepository.UpdateAsync(data.InternalID,
+                    new
                     {
                         //InternalID = Guid.NewGuid(),
                         data.Username,
