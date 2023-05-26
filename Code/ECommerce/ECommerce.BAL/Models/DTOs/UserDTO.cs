@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECommerce.BAL.Models.DTOs
 {
@@ -9,6 +10,9 @@ namespace ECommerce.BAL.Models.DTOs
         [MaxLength(50)] public string Email { get; set; }
         [MaxLength(100)] public string Password { get; set; }
         [MaxLength(15)] public string Role { get; set; }
+        
+        //Profile
+        public IFormFile? Image { get; set; }
         public string? ImagePath { get; set; }
 
         //Common Details
