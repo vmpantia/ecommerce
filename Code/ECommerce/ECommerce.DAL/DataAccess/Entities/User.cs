@@ -9,6 +9,7 @@ namespace ECommerce.DAL.DataAccess.Entities
         [MaxLength(50)] public string Email { get; set; }
         [MaxLength(100)] public string Password { get; set; }
         [MaxLength(15)] public string Role { get; set; }
+        public string? ImagePath { get; set; }
 
         //Common Details
         public int Status { get; set; }
