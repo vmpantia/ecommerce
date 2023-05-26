@@ -1,5 +1,6 @@
 ﻿using ECommerce.BAL.Models.DTOs;
 using ECommerce.DAL.Contractors;
+using ECommerce.DAL.DataAccess.Entities;
 
 namespace ECommerce.BAL.Services
 {
@@ -27,6 +28,39 @@ namespace ECommerce.BAL.Services
                 CreatedDate = data.CreatedDate,
                 ModifiedDate = data.ModifiedDate
             });
+        }
+
+        public async Task SaveUserAsync(UserDTO data)
+        {
+            var isAdd = data.InternalID == Guid.Empty;
+            if(isAdd)
+                await _uow.UserRepository.InsertAsync(new User
+                {
+                    InternalID = Guid.NewGuid(),
+                    Username = data.Username,
+                    Email = data.Email,
+                    Password = data.Password,
+                    Role = data.Role,
+                    ImagePath = data.ImagePath,
+                    Status = data.Status,
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = null
+                });
+            else
+                await _uow.UserRepository.UpdateAsync(data.InternalID, 
+                    new 
+                    {
+                        //InternalID = Guid.NewGuid(),
+                        data.Username,
+                        data.Email,
+                        data.Password,
+                        data.Role,
+                        data.ImagePath,
+                        data.Status,
+                        data.CreatedDate,
+                        ModifiedDate = DateTime.Now
+                    });
+            await _uow.SaveAsync();
         }
     }
 }
