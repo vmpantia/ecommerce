@@ -41,9 +41,9 @@ namespace ECommerce.BAL.Services
             var isAdd = data.InternalID == Guid.Empty;
             data.InternalID = isAdd ? Guid.NewGuid() : data.InternalID;
 
-            //Update Image or Profile
+            //Upload Profile
             if(data.Image != null)
-                data.ImagePath = await _file.UploadFileAsync(data.Image);
+                data.ImagePath = await _file.UploadFileAsync(data.InternalID, "profile", data.Image);
 
             if (isAdd)
                 await _uow.UserRepository.InsertAsync(new User

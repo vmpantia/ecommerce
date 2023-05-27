@@ -8,8 +8,10 @@ namespace ECommerce.BAL.Services
     {
         private readonly IWebHostEnvironment _environment;
         public FileService(IWebHostEnvironment environment) => _environment = environment;
-        public async Task<string> UploadFileAsync(IFormFile? file)
+        public async Task<string> UploadFileAsync(Guid internalID, string title, IFormFile? file)
         {
+            var filePathFormat = "{0}{1}_{2}{3}";
+
             if (file == null || file.Length <= 0)
                 return string.Empty;
 
@@ -20,7 +22,7 @@ namespace ECommerce.BAL.Services
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
 
-            var filePath = directoryPath + file.FileName;
+            var filePath = string.Format(filePathFormat, directoryPath, internalID, title, Path.GetExtension(file.FileName));
             using (FileStream fs = File.Create(filePath))
             {
                 await file.CopyToAsync(fs);
