@@ -8,7 +8,12 @@ namespace ECommerce.BAL.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _uow;
-        public UserService(IUnitOfWork uow) => _uow = uow;
+        private readonly IFileService _file;
+        public UserService(IUnitOfWork uow, IFileService file)
+        {
+            _uow = uow;
+            _file = file;
+        }
 
         public async Task<IEnumerable<UserDTO>> GetUsersAsync()
         {
@@ -34,10 +39,16 @@ namespace ECommerce.BAL.Services
         public async Task SaveUserAsync(UserDTO data)
         {
             var isAdd = data.InternalID == Guid.Empty;
+            data.InternalID = isAdd ? Guid.NewGuid() : data.InternalID;
+
+            //Update Image or Profile
+            if(data.Image != null)
+                data.ImagePath = await _file.UploadFileAsync(data.Image);
+
             if (isAdd)
                 await _uow.UserRepository.InsertAsync(new User
                 {
-                    InternalID = Guid.NewGuid(),
+                    InternalID = data.InternalID,
                     Username = data.Username,
                     Email = data.Email,
                     Password = data.Password,
@@ -51,7 +62,7 @@ namespace ECommerce.BAL.Services
                 await _uow.UserRepository.UpdateAsync(data.InternalID,
                     new
                     {
-                        //InternalID = Guid.NewGuid(),
+                        //data.InternalID,
                         data.Username,
                         data.Email,
                         data.Password,
