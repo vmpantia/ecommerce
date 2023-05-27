@@ -1,5 +1,6 @@
 ﻿using ECommerce.BAL.Contractors;
 using ECommerce.BAL.Models.DTOs;
+using ECommerce.Common.Constants.Messages;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers
@@ -34,7 +35,7 @@ namespace ECommerce.Api.Controllers
             try
             {
                 await _user.SaveUserAsync(data);
-                return Ok("User data has been saved successfully.");
+                return Ok(SuccessMessage.SAVED_USER);
             }
             catch (Exception ex)
             {

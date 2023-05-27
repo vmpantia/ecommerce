@@ -1,5 +1,6 @@
 ﻿using ECommerce.BAL.Contractors;
 using ECommerce.BAL.Models.DTOs;
+using ECommerce.Common.Constants.Messages;
 using ECommerce.DAL.Contractors;
 using ECommerce.DAL.DataAccess.Entities;
 
@@ -19,7 +20,7 @@ namespace ECommerce.BAL.Services
         {
             var result = await _uow.UserRepository.GetAllAsync();
             if (result == null)
-                throw new Exception("Error in fetching of users information in the system.");
+                throw new Exception(ErrorMessage.GET_USERS);
 
             return result.Select(data => new UserDTO
             {

@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Api", "ECommerce.Api\ECommerce.Api.csproj", "{02D335C5-F055-4DE9-8268-8D1526BF59C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.Api", "ECommerce.Api\ECommerce.Api.csproj", "{02D335C5-F055-4DE9-8268-8D1526BF59C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.DAL", "ECommerce.DAL\ECommerce.DAL.csproj", "{F24EAE0B-5819-40EA-B3D0-933A2586EA9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.DAL", "ECommerce.DAL\ECommerce.DAL.csproj", "{F24EAE0B-5819-40EA-B3D0-933A2586EA9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.BAL", "ECommerce.BAL\ECommerce.BAL.csproj", "{CE6897D6-E293-44D8-883A-692AF6DFEAFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.BAL", "ECommerce.BAL\ECommerce.BAL.csproj", "{CE6897D6-E293-44D8-883A-692AF6DFEAFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Common", "ECommerce.Common\ECommerce.Common.csproj", "{62227DE0-3817-453C-BB7B-FF0BCF8CF27D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{CE6897D6-E293-44D8-883A-692AF6DFEAFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE6897D6-E293-44D8-883A-692AF6DFEAFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE6897D6-E293-44D8-883A-692AF6DFEAFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62227DE0-3817-453C-BB7B-FF0BCF8CF27D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62227DE0-3817-453C-BB7B-FF0BCF8CF27D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62227DE0-3817-453C-BB7B-FF0BCF8CF27D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62227DE0-3817-453C-BB7B-FF0BCF8CF27D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
