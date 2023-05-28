@@ -29,7 +29,7 @@ namespace ECommerce.BAL.Services
                 Email = data.Email,
                 Password = data.Password,
                 Role = data.Role,
-                ImagePath = data.ImagePath,
+                StoredFileName = data.Profile,
                 Status = data.Status,
                 StatusDescription = "Enabled",
                 CreatedDate = data.CreatedDate,
@@ -43,8 +43,8 @@ namespace ECommerce.BAL.Services
             data.InternalID = isAdd ? Guid.NewGuid() : data.InternalID;
 
             //Upload Profile
-            if(data.Image != null)
-                data.ImagePath = await _file.UploadFileAsync(data.InternalID, "profile", data.Image);
+            if(data.File != null)
+                data.StoredFileName = await _file.UploadFileAsync(data.InternalID, "profile", data.File);
 
             if (isAdd)
                 await _uow.UserRepository.InsertAsync(new User
@@ -54,7 +54,7 @@ namespace ECommerce.BAL.Services
                     Email = data.Email,
                     Password = data.Password,
                     Role = data.Role,
-                    ImagePath = data.ImagePath,
+                    Profile = data.StoredFileName,
                     Status = data.Status,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = null
@@ -68,7 +68,7 @@ namespace ECommerce.BAL.Services
                         data.Email,
                         data.Password,
                         data.Role,
-                        data.ImagePath,
+                        Profile = data.StoredFileName,
                         data.Status,
                         data.CreatedDate,
                         ModifiedDate = DateTime.Now

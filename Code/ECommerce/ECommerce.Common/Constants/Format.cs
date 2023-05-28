@@ -2,6 +2,6 @@
 {
     public class Format
     {
-        public const string UPLOADS_FILE_PATH = "{0}{1}_{2}{3}";
+        public const string UPLOADS_FILE_NAME = "{0}_{1}{2}";
     }
 }

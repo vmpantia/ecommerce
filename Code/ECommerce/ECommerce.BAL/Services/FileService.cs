@@ -2,6 +2,7 @@
 using ECommerce.Common.Constants;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace ECommerce.BAL.Services
 {
@@ -17,16 +18,17 @@ namespace ECommerce.BAL.Services
             if (string.IsNullOrEmpty(_environment.WebRootPath))
                 _environment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), Default.UPLOADS_ROOT);
 
-            var directoryPath = _environment.WebRootPath + Default.UPLOADS_FOLDER_PATH;
+            var directoryPath = Path.Combine(_environment.WebRootPath, Default.UPLOADS_FOLDER_PATH);
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
 
-            var filePath = string.Format(Format.UPLOADS_FILE_PATH, directoryPath, internalID, title, Path.GetExtension(file.FileName));
+            var fileName = string.Format(Format.UPLOADS_FILE_NAME, internalID, title, Path.GetExtension(file.FileName));
+            var filePath = Path.Combine(directoryPath, fileName);
             using (FileStream fs = File.Create(filePath))
             {
                 await file.CopyToAsync(fs);
                 fs.Flush();
-                return filePath;
+                return fileName;
             }
         }
     }

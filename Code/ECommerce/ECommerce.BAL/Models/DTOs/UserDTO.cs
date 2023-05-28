@@ -3,17 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ECommerce.BAL.Models.DTOs
 {
-    public class UserDTO
+    public class UserDTO : FileDTO
     {
         [Key] public Guid InternalID { get; set; }
         [MaxLength(15)] public string Username { get; set; }
         [MaxLength(50)] public string Email { get; set; }
         [MaxLength(100)] public string Password { get; set; }
         [MaxLength(15)] public string Role { get; set; }
-        
-        //Profile
-        public IFormFile? Image { get; set; }
-        public string? ImagePath { get; set; }
 
         //Common Details
         public int Status { get; set; }
