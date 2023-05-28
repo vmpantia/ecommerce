@@ -20,9 +20,9 @@ namespace ECommerce.DAL.Repositories
             return await _table.ToListAsync();
         }
 
-        public T? GetFirstByCondition(Func<T, bool> condition)
+        public IEnumerable<T> GetByCondition(Func<T, bool> condition)
         {
-            return _table.Where(condition).First();
+            return _table.Where(condition).ToList();
         }
 
         public async Task<T> GetByIDAsync(object id)

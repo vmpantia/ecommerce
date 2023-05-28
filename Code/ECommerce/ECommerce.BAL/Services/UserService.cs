@@ -118,12 +118,13 @@ namespace ECommerce.BAL.Services
             if (request == null)
                 throw new Exception(ErrorMessage.LOGIN_USER_REQUEST_EMPTY);
 
-            var user = _uow.UserRepository.GetFirstByCondition(data => (data.Username == request.LogonName ||
-                                                                        data.Email == request.LogonName) &&
-                                                                       data.Password == request.Password);
-            if (user == null)
+            var result = _uow.UserRepository.GetByCondition(data => (data.Username == request.LogonName ||
+                                                                   data.Email == request.LogonName) &&
+                                                                  data.Password == request.Password);
+            if (!result.Any())
                 throw new Exception(ErrorMessage.NO_DATA_FOUND);
 
+            var user = result.First();
             return new UserDTO
             {
                 InternalID = user.InternalID,
