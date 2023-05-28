@@ -6,6 +6,7 @@ namespace ECommerce.BAL.Contractors
     public interface IUserService
     {
         Task<IEnumerable<UserDTO>> GetUsersAsync();
-        Task SaveUserAsync(SaveUserRequest request);
+        Task SaveUserAsync(SaveUserRequest data);
+        Task RegisterUserAsync(RegisterUserRequest data);
     }
 }

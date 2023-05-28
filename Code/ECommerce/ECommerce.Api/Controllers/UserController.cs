@@ -42,5 +42,19 @@ namespace ECommerce.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("RegisterUser")]
+        public async Task<IActionResult> RegisterUserAsync(RegisterUserRequest request)
+        {
+            try
+            {
+                await _user.RegisterUserAsync(request);
+                return Ok(SuccessMessage.REGISTERED_USER);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

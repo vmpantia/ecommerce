@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using ECommerce.BAL.Contractors;
+﻿using ECommerce.BAL.Contractors;
 using ECommerce.BAL.Models.DTOs;
 using ECommerce.BAL.Models.Requests;
 using ECommerce.Common.Constants.Messages;
@@ -83,6 +82,28 @@ namespace ECommerce.BAL.Services
                         ModifiedDate = DateTime.Now
                     });
             await _uow.SaveAsync();
+        }
+
+        public async Task RegisterUserAsync(RegisterUserRequest request)
+        {
+            if (request == null)
+                throw new Exception(ErrorMessage.REGISTER_USER_REQUEST_EMPTY);
+
+            await _uow.UserRepository.InsertAsync(new User
+            {
+                InternalID = Guid.NewGuid(),
+                Username = request.Username,
+                Email = request.Email,
+                Password = request.Password,
+                Role = "User",
+                Profile = null,
+                Status = 0,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = null
+            });
+            await _uow.SaveAsync();
+
+            //TODO: Send Activation Email
         }
     }
 }
