@@ -2,10 +2,11 @@
 {
     public interface IBaseRepository<T> where T : class
     {
-        Task DeleteAsync(object id);
         Task<IEnumerable<T>> GetAllAsync();
+        T? GetFirstByCondition(Func<T, bool> condition);
         Task<T> GetByIDAsync(object id);
         Task InsertAsync(T entity);
         Task UpdateAsync(object id, object model);
+        Task DeleteAsync(object id);
     }
 }

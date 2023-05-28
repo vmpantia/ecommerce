@@ -1,4 +1,5 @@
-﻿using ECommerce.DAL.Contractors;
+﻿using ECommerce.Common.Constants.Messages;
+using ECommerce.DAL.Contractors;
 using ECommerce.DAL.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,11 +20,16 @@ namespace ECommerce.DAL.Repositories
             return await _table.ToListAsync();
         }
 
+        public T? GetFirstByCondition(Func<T, bool> condition)
+        {
+            return _table.Where(condition).First();
+        }
+
         public async Task<T> GetByIDAsync(object id)
         {
             var result = await _table.FindAsync(id);
             if (result == null)
-                throw new Exception("No data found in the system.");
+                throw new Exception(ErrorMessage.NO_DATA_FOUND);
 
             return result;
         }
@@ -33,17 +39,16 @@ namespace ECommerce.DAL.Repositories
             await _table.AddAsync(entity);
         }
 
-        public async Task DeleteAsync(object id)
-        {
-            var result = await GetByIDAsync(id);
-            _table.Remove(result);
-        }
-
         public async Task UpdateAsync(object id, object model)
         {
             var result = await GetByIDAsync(id);
             _db.Entry(result).CurrentValues.SetValues(model);
         }
 
+        public async Task DeleteAsync(object id)
+        {
+            var result = await GetByIDAsync(id);
+            _table.Remove(result);
+        }
     }
 }

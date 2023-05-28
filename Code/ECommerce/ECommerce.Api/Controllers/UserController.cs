@@ -1,6 +1,7 @@
 ﻿using ECommerce.BAL.Contractors;
 using ECommerce.BAL.Models.Requests;
 using ECommerce.Common.Constants.Messages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers
@@ -12,7 +13,7 @@ namespace ECommerce.Api.Controllers
         private readonly IUserService _user;
         public UserController(IUserService user) => _user = user;
 
-        [HttpGet("GetUsers")]
+        [Authorize, HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsersAsync()
         {
             try
@@ -29,7 +30,7 @@ namespace ECommerce.Api.Controllers
             }
         }
 
-        [HttpPost("SaveUser")]
+        [Authorize, HttpPost("SaveUser")]
         public async Task<IActionResult> SaveUserAsync([FromForm] SaveUserRequest request)
         {
             try
@@ -43,13 +44,32 @@ namespace ECommerce.Api.Controllers
             }
         }
 
-        [HttpPost("RegisterUser")]
+        [AllowAnonymous, HttpPost("RegisterUser")]
         public async Task<IActionResult> RegisterUserAsync(RegisterUserRequest request)
         {
             try
             {
                 await _user.RegisterUserAsync(request);
                 return Ok(SuccessMessage.REGISTERED_USER);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous, HttpPost("LoginUser")]
+        public IActionResult LoginUser(LoginUserRequest request)
+        {
+            try
+            {
+                var user = _user.LoginUser(request);
+                var token = _user.GenerateAccesToken(user);
+                return Ok(new
+                {
+                    email = user.Email,
+                    accessToken = token,
+                });
             }
             catch (Exception ex)
             {

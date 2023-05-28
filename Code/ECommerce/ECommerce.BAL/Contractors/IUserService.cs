@@ -8,5 +8,7 @@ namespace ECommerce.BAL.Contractors
         Task<IEnumerable<UserDTO>> GetUsersAsync();
         Task SaveUserAsync(SaveUserRequest data);
         Task RegisterUserAsync(RegisterUserRequest data);
+        UserDTO LoginUser(LoginUserRequest request);
+        string GenerateAccesToken(UserDTO user);
     }
 }
