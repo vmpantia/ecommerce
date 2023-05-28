@@ -13,7 +13,7 @@ namespace ECommerce.Api.Controllers
         private readonly IUserService _user;
         public UserController(IUserService user) => _user = user;
 
-        [Authorize, HttpGet("GetUsers")]
+        [Authorize(Roles = "Admin"), HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsersAsync()
         {
             try
