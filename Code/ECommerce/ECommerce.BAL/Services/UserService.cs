@@ -1,5 +1,7 @@
-﻿using ECommerce.BAL.Contractors;
+﻿using Azure.Core;
+using ECommerce.BAL.Contractors;
 using ECommerce.BAL.Models.DTOs;
+using ECommerce.BAL.Models.Requests;
 using ECommerce.Common.Constants.Messages;
 using ECommerce.DAL.Contractors;
 using ECommerce.DAL.DataAccess.Entities;
@@ -41,40 +43,43 @@ namespace ECommerce.BAL.Services
             });
         }
 
-        public async Task SaveUserAsync(UserDTO data)
+        public async Task SaveUserAsync(SaveUserRequest request)
         {
-            var isAdd = data.InternalID == Guid.Empty;
-            data.InternalID = isAdd ? Guid.NewGuid() : data.InternalID;
+            if (request == null)
+                throw new Exception(ErrorMessage.SAVE_USER_REQUEST_EMPTY);
+
+            var isAdd = request.inputUser.InternalID == Guid.Empty;
+            request.inputUser.InternalID = isAdd ? Guid.NewGuid() : request.inputUser.InternalID;
 
             //Upload Profile
-            if(data.Profile?.File != null)
-                data.Profile.FileName = await _file.UploadFileAsync(data.InternalID, "profile", data.Profile.File);
+            if(request.inputUser.Profile?.File != null)
+                request.inputUser.Profile.FileName = await _file.UploadFileAsync(request.inputUser.InternalID, "Profile", request.inputUser.Profile.File);
 
             if (isAdd)
                 await _uow.UserRepository.InsertAsync(new User
                 {
-                    InternalID = data.InternalID,
-                    Username = data.Username,
-                    Email = data.Email,
-                    Password = data.Password,
-                    Role = data.Role,
-                    Profile = data.Profile?.FileName,
-                    Status = data.Status,
+                    InternalID = request.inputUser.InternalID,
+                    Username = request.inputUser.Username,
+                    Email = request.inputUser.Email,
+                    Password = request.inputUser.Password,
+                    Role = request.inputUser.Role,
+                    Profile = request.inputUser.Profile?.FileName,
+                    Status = request.inputUser.Status,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = null
                 });
             else
-                await _uow.UserRepository.UpdateAsync(data.InternalID,
+                await _uow.UserRepository.UpdateAsync(request.inputUser.InternalID,
                     new
                     {
-                        //data.InternalID,
-                        data.Username,
-                        data.Email,
-                        data.Password,
-                        data.Role,
-                        Profile = data.Profile?.FileName,
-                        data.Status,
-                        data.CreatedDate,
+                        //request.inputUser.InternalID,
+                        request.inputUser.Username,
+                        request.inputUser.Email,
+                        request.inputUser.Password,
+                        request.inputUser.Role,
+                        Profile = request.inputUser.Profile?.FileName,
+                        request.inputUser.Status,
+                        request.inputUser.CreatedDate,
                         ModifiedDate = DateTime.Now
                     });
             await _uow.SaveAsync();

@@ -1,5 +1,5 @@
 ﻿using ECommerce.BAL.Contractors;
-using ECommerce.BAL.Models.DTOs;
+using ECommerce.BAL.Models.Requests;
 using ECommerce.Common.Constants.Messages;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,11 +30,11 @@ namespace ECommerce.Api.Controllers
         }
 
         [HttpPost("SaveUser")]
-        public async Task<IActionResult> SaveUserAsync([FromForm] UserDTO data)
+        public async Task<IActionResult> SaveUserAsync([FromForm] SaveUserRequest request)
         {
             try
             {
-                await _user.SaveUserAsync(data);
+                await _user.SaveUserAsync(request);
                 return Ok(SuccessMessage.SAVED_USER);
             }
             catch (Exception ex)

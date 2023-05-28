@@ -3,5 +3,6 @@
     public class ErrorMessage
     {
         public const string GET_USERS = "Error in getting of users information in the system.";
+        public const string SAVE_USER_REQUEST_EMPTY = "Save user request cannot be empty or null.";
     }
 }
