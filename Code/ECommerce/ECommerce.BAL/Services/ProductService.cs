@@ -9,7 +9,7 @@ using ECommerce.DAL.DataAccess.Entities;
 
 namespace ECommerce.BAL.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private readonly IUnitOfWork _uow;
         private readonly IFileService _file;
@@ -23,7 +23,7 @@ namespace ECommerce.BAL.Services
         {
             var result = await _uow.ProductRepository.GetAllAsync();
             if (result == null)
-                throw new Exception(ErrorMessage.GET_USERS);
+                throw new Exception(ErrorMessage.GET_PRODUCTS);
 
             return result.Select(data => new ProductDTO
             {
@@ -45,12 +45,12 @@ namespace ECommerce.BAL.Services
         public async Task SaveProductAsync(SaveProductRequest request)
         {
             if (request == null)
-                throw new Exception(ErrorMessage.SAVE_USER_REQUEST_EMPTY);
+                throw new Exception(ErrorMessage.SAVE_PRODUCT_REQUEST_EMPTY);
 
             var isAdd = request.inputProduct.InternalID == Guid.Empty;
             request.inputProduct.InternalID = isAdd ? Guid.NewGuid() : request.inputProduct.InternalID;
 
-            //Upload Profile
+            //Upload Image
             if (request.inputProduct.Image?.File != null)
                 request.inputProduct.Image.FileName = await _file.UploadFileAsync(request.inputProduct.InternalID, FileType.PRODUCT, request.inputProduct.Image.File);
 
