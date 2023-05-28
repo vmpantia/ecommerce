@@ -6,5 +6,6 @@ namespace ECommerce.BAL.Models.DTOs
     {
         public IFormFile? File { get; set; }
         public string? StoredFileName { get; set; }
+        public string? UrlFilePath { get; set; }
     }
 }

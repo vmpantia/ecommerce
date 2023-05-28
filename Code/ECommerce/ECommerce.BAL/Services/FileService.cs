@@ -2,34 +2,48 @@
 using ECommerce.Common.Constants;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using System.Net;
 
 namespace ECommerce.BAL.Services
 {
     public class FileService : IFileService
     {
-        private readonly IWebHostEnvironment _environment;
-        public FileService(IWebHostEnvironment environment) => _environment = environment;
+        private string _directoryPath;
+        public FileService(IWebHostEnvironment environment)
+        {
+            if (string.IsNullOrEmpty(environment.WebRootPath))
+                environment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), Default.UPLOADS_ROOT);
+
+            var directoryPath = environment.WebRootPath + Default.UPLOADS_FOLDER_PATH;
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+
+            _directoryPath = directoryPath;
+        }
         public async Task<string> UploadFileAsync(Guid internalID, string title, IFormFile? file)
         {
             if (file == null || file.Length <= 0)
                 return string.Empty;
 
-            if (string.IsNullOrEmpty(_environment.WebRootPath))
-                _environment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), Default.UPLOADS_ROOT);
-
-            var directoryPath = Path.Combine(_environment.WebRootPath, Default.UPLOADS_FOLDER_PATH);
-            if (!Directory.Exists(directoryPath))
-                Directory.CreateDirectory(directoryPath);
-
             var fileName = string.Format(Format.UPLOADS_FILE_NAME, internalID, title, Path.GetExtension(file.FileName));
-            var filePath = Path.Combine(directoryPath, fileName);
+            var filePath = Path.Combine(_directoryPath, fileName);
             using (FileStream fs = File.Create(filePath))
             {
                 await file.CopyToAsync(fs);
                 fs.Flush();
                 return fileName;
             }
+        }
+
+        public string GetURLFilePath(string? fileName)
+        {
+            var urlPath = string.Empty;
+            if(!string.IsNullOrEmpty(fileName))
+            {
+                var filePath = Path.Combine(_directoryPath, fileName);
+                if (File.Exists(filePath))
+                    urlPath = Path.Combine(Default.HOST_URL, Default.UPLOADS_URL_FOLDER_PATH, fileName);
+            }
+            return urlPath;
         }
     }
 }

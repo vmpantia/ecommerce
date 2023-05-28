@@ -30,6 +30,7 @@ namespace ECommerce.BAL.Services
                 Password = data.Password,
                 Role = data.Role,
                 StoredFileName = data.Profile,
+                UrlFilePath = _file.GetURLFilePath(data.Profile),
                 Status = data.Status,
                 StatusDescription = "Enabled",
                 CreatedDate = data.CreatedDate,
