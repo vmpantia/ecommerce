@@ -19,6 +19,7 @@ namespace ECommerce.BAL.Services
 
             _directoryPath = directoryPath;
         }
+
         public async Task<string> UploadFileAsync(Guid internalID, string title, IFormFile? file)
         {
             if (file == null || file.Length <= 0)

@@ -1,6 +1,8 @@
 ﻿using ECommerce.BAL.Contractors;
 using ECommerce.BAL.Models.DTOs;
 using ECommerce.BAL.Models.Requests;
+using ECommerce.Common;
+using ECommerce.Common.Constants;
 using ECommerce.Common.Constants.Messages;
 using ECommerce.DAL.Contractors;
 using ECommerce.DAL.DataAccess.Entities;
@@ -43,7 +45,7 @@ namespace ECommerce.BAL.Services
                     UrlFilePath = _file.GetURLFilePath(data.Profile),
                 },
                 Status = data.Status,
-                StatusDescription = "Enabled",
+                StatusDescription = Parser.ParseStatus(data.Status),
                 CreatedDate = data.CreatedDate,
                 ModifiedDate = data.ModifiedDate
             });
@@ -59,7 +61,7 @@ namespace ECommerce.BAL.Services
 
             //Upload Profile
             if(request.inputUser.Profile?.File != null)
-                request.inputUser.Profile.FileName = await _file.UploadFileAsync(request.inputUser.InternalID, "Profile", request.inputUser.Profile.File);
+                request.inputUser.Profile.FileName = await _file.UploadFileAsync(request.inputUser.InternalID, FileType.PROFILE, request.inputUser.Profile.File);
 
             if (isAdd)
                 await _uow.UserRepository.InsertAsync(new User
@@ -104,7 +106,7 @@ namespace ECommerce.BAL.Services
                 Password = request.Password,
                 Role = "User",
                 Profile = null,
-                Status = 0,
+                Status = Status.ENABLED_INT,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = null
             });
@@ -138,7 +140,7 @@ namespace ECommerce.BAL.Services
                     UrlFilePath = _file.GetURLFilePath(user.Profile),
                 },
                 Status = user.Status,
-                StatusDescription = "Enabled",
+                StatusDescription = Parser.ParseStatus(user.Status),
                 CreatedDate = user.CreatedDate,
                 ModifiedDate = user.ModifiedDate
             };
