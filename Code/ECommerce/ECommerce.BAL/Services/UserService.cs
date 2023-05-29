@@ -19,11 +19,16 @@ namespace ECommerce.BAL.Services
         private readonly IUnitOfWork _uow;
         private readonly IFileService _file;
         private readonly IConfiguration _config;
-        public UserService(IUnitOfWork uow, IFileService file, IConfiguration config)
+        private readonly IEmailService _email;
+        public UserService(IUnitOfWork uow,
+                           IFileService file, 
+                           IConfiguration config,
+                           IEmailService email)
         {
             _uow = uow;
             _file = file;
             _config = config;
+            _email = email;
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsersAsync()
@@ -125,6 +130,9 @@ namespace ECommerce.BAL.Services
                                                                   data.Password == request.Password);
             if (!result.Any())
                 throw new Exception(ErrorMessage.NO_DATA_FOUND);
+
+
+            _email.SendEmail("Test");
 
             var user = result.First();
             return new UserDTO

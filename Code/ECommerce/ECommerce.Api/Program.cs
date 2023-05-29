@@ -19,6 +19,7 @@ builder.Services.AddDbContext<ECommerceDbContext>(option =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IFileService, FileService>();
 
 // Setup JWT Token for Authentication
