@@ -8,5 +8,6 @@
         Task InsertAsync(T entity);
         Task UpdateAsync(object id, object model);
         Task DeleteAsync(object id);
+        bool IsExist(Func<T, bool> condition);
     }
 }

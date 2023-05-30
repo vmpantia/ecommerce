@@ -11,8 +11,11 @@
 
 
         public const string GET_USERS = "Error in getting of users information in the system.";
+
         public const string SAVE_USER_REQUEST_EMPTY = "Save user request cannot be empty or null.";
         public const string REGISTER_USER_REQUEST_EMPTY = "Register user request cannot be empty or null.";
+        public const string LOGON_NAME_ALREADY_EXIST = "Email or Username is already exist in the system.";
+
 
         //Product
         public const string GET_PRODUCTS = "Error in getting of products information in the system.";

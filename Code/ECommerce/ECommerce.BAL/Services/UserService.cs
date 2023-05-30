@@ -96,8 +96,12 @@ namespace ECommerce.BAL.Services
 
         public async Task RegisterUserAsync(RegisterUserRequest request)
         {
-            if (request == null)
+            if (request == null) /*Check if the request is null or empty*/
                 throw new Exception(ErrorMessage.REGISTER_USER_REQUEST_EMPTY);
+
+            if (_uow.UserRepository.IsExist(data => data.Username == request.Username ||
+                                                    data.Email == request.Email)) /*Check if the email or username is already exist*/
+                throw new Exception(ErrorMessage.LOGON_NAME_ALREADY_EXIST);
 
             await _uow.UserRepository.InsertAsync(new User
             {
@@ -111,13 +115,14 @@ namespace ECommerce.BAL.Services
                 CreatedDate = DateTime.Now,
                 ModifiedDate = null
             });
+
             await _uow.SaveAsync();
             //TODO: Send Activation Email
         }
 
         public UserDTO LoginUser(LoginUserRequest request)
         {
-            if (request == null)
+            if (request == null) /*Check if the request is null or empty*/
                 throw new Exception(ErrorMessage.LOGIN_USER_REQUEST_EMPTY);
 
             var result = _uow.UserRepository.GetByCondition(data => (data.Username == request.LogonName ||
@@ -130,7 +135,7 @@ namespace ECommerce.BAL.Services
             if (result.First().Status < Status.ENABLED_INT) /*Check if user is invalid (not activated)*/
                 throw new Exception(ErrorMessage.USER_NOT_ACTIVATED);
 
-            if(result.First().Status > Status.ENABLED_INT) /*Check if user is disabled or deletion*/
+            if (result.First().Status > Status.ENABLED_INT) /*Check if user is disabled or deletion*/
                 throw new Exception(ErrorMessage.USER_DISABLED);
 
             var user = result.First();

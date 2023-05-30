@@ -50,5 +50,10 @@ namespace ECommerce.DAL.Repositories
             var result = await GetByIDAsync(id);
             _table.Remove(result);
         }
+
+        public bool IsExist(Func<T, bool> condition)
+        {
+            return _table.Where(condition).ToList().Any();
+        }
     }
 }
