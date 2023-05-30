@@ -8,6 +8,8 @@ namespace ECommerce.Common
         {
             switch(status)
             {
+                case Status.INVALID_INT:
+                    return Status.INVALID_STR;
                 case Status.ENABLED_INT:
                     return Status.ENABLED_STR;
                 case Status.DISABLED_INT:

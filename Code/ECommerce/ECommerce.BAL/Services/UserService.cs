@@ -107,12 +107,11 @@ namespace ECommerce.BAL.Services
                 Password = request.Password,
                 Role = "User",
                 Profile = null,
-                Status = Status.ENABLED_INT,
+                Status = Status.INVALID_INT,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = null
             });
             await _uow.SaveAsync();
-
             //TODO: Send Activation Email
         }
 
@@ -124,11 +123,15 @@ namespace ECommerce.BAL.Services
             var result = _uow.UserRepository.GetByCondition(data => (data.Username == request.LogonName ||
                                                                    data.Email == request.LogonName) &&
                                                                   data.Password == request.Password);
-            if (!result.Any())
+
+            if (!result.Any()) /*Check if user is exist based on the credentials*/
                 throw new Exception(ErrorMessage.NO_DATA_FOUND);
 
+            if (result.First().Status < Status.ENABLED_INT) /*Check if user is invalid (not activated)*/
+                throw new Exception(ErrorMessage.USER_NOT_ACTIVATED);
 
-            _email.SendEmail("Test");
+            if(result.First().Status > Status.ENABLED_INT) /*Check if user is disabled or deletion*/
+                throw new Exception(ErrorMessage.USER_DISABLED);
 
             var user = result.First();
             return new UserDTO
