@@ -30,11 +30,7 @@ namespace ECommerce.BAL.Services
                 InternalID = data.InternalID,
                 Name = data.Name,
                 Description = data.Description,
-                Image = new FileDTO
-                {
-                    FileName = data.Image,
-                    UrlFilePath = _file.GetURLFilePath(data.Image),
-                },
+                Image = _file.GetURLFilePath(data.Image),
                 Status = data.Status,
                 StatusDescription = Parser.ParseStatus(data.Status),
                 CreatedDate = data.CreatedDate,
@@ -51,8 +47,8 @@ namespace ECommerce.BAL.Services
             request.inputProduct.InternalID = isAdd ? Guid.NewGuid() : request.inputProduct.InternalID;
 
             //Upload Image
-            if (request.inputProduct.Image?.File != null)
-                request.inputProduct.Image.FileName = await _file.UploadFileAsync(request.inputProduct.InternalID, FileType.PRODUCT, request.inputProduct.Image.File);
+            if (request.formImage != null)
+                request.inputProduct.Image = await _file.UploadFileAsync(request.inputProduct.InternalID, FileType.PRODUCT, request.formImage);
 
             if (isAdd)
                 await _uow.ProductRepository.InsertAsync(new Product
@@ -60,7 +56,7 @@ namespace ECommerce.BAL.Services
                     InternalID = request.inputProduct.InternalID,
                     Name = request.inputProduct.Name,
                     Description = request.inputProduct.Description,
-                    Image = request.inputProduct.Image?.FileName,
+                    Image = request.inputProduct.Image,
                     Status = request.inputProduct.Status,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = null
@@ -72,9 +68,9 @@ namespace ECommerce.BAL.Services
                         //request.inputProduct.InternalID,
                         request.inputProduct.Name,
                         request.inputProduct.Description,
-                        Image = request.inputProduct.Image?.FileName,
+                        request.inputProduct.Image,
                         request.inputProduct.Status,
-                        request.inputProduct.CreatedDate,
+                        //request.inputProduct.CreatedDate,
                         ModifiedDate = DateTime.Now
                     });
             await _uow.SaveAsync();

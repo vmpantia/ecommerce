@@ -44,11 +44,7 @@ namespace ECommerce.BAL.Services
                 Email = data.Email,
                 Password = data.Password,
                 Role = data.Role,
-                Profile = new FileDTO
-                {
-                    FileName = data.Profile,
-                    UrlFilePath = _file.GetURLFilePath(data.Profile),
-                },
+                Profile = _file.GetURLFilePath(data.Profile),
                 Status = data.Status,
                 StatusDescription = Parser.ParseStatus(data.Status),
                 CreatedDate = data.CreatedDate,
@@ -65,8 +61,8 @@ namespace ECommerce.BAL.Services
             request.inputUser.InternalID = isAdd ? Guid.NewGuid() : request.inputUser.InternalID;
 
             //Upload Profile
-            if(request.inputUser.Profile?.File != null)
-                request.inputUser.Profile.FileName = await _file.UploadFileAsync(request.inputUser.InternalID, FileType.PROFILE, request.inputUser.Profile.File);
+            if (request.formProfile != null)
+                request.inputUser.Profile = await _file.UploadFileAsync(request.inputUser.InternalID, FileType.PROFILE, request.formProfile);
 
             if (isAdd)
                 await _uow.UserRepository.InsertAsync(new User
@@ -76,7 +72,7 @@ namespace ECommerce.BAL.Services
                     Email = request.inputUser.Email,
                     Password = request.inputUser.Password,
                     Role = request.inputUser.Role,
-                    Profile = request.inputUser.Profile?.FileName,
+                    Profile = request.inputUser.Profile,
                     Status = request.inputUser.Status,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = null
@@ -90,9 +86,9 @@ namespace ECommerce.BAL.Services
                         request.inputUser.Email,
                         request.inputUser.Password,
                         request.inputUser.Role,
-                        Profile = request.inputUser.Profile?.FileName,
+                        request.inputUser.Profile,
                         request.inputUser.Status,
-                        request.inputUser.CreatedDate,
+                        //request.inputUser.CreatedDate,
                         ModifiedDate = DateTime.Now
                     });
             await _uow.SaveAsync();
@@ -142,11 +138,7 @@ namespace ECommerce.BAL.Services
                 Email = user.Email,
                 Password = user.Password,
                 Role = user.Role,
-                Profile = new FileDTO
-                {
-                    FileName = user.Profile,
-                    UrlFilePath = _file.GetURLFilePath(user.Profile),
-                },
+                Profile = _file.GetURLFilePath(user.Profile),
                 Status = user.Status,
                 StatusDescription = Parser.ParseStatus(user.Status),
                 CreatedDate = user.CreatedDate,

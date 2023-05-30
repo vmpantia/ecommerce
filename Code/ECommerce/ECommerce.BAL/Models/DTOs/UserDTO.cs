@@ -12,7 +12,7 @@ namespace ECommerce.BAL.Models.DTOs
         [MaxLength(15)] public string Role { get; set; }
 
         //Profile
-        public FileDTO? Profile { get; set; }
+        public string? Profile { get; set; }
 
         //Common Details
         public int Status { get; set; }
