@@ -12,7 +12,7 @@
 
         public const string ATTR_USR_STATUS_NOT_ACTIVATED = "User is currently not activated, Please check your email to activate this user.";
         public const string ATTR_USR_STATUS_NOT_ENABLED = "User is currently not able to login, Please contact administrator of this system.";
-        public const string ATTR_USR_LOGON_NAME_EXIST = "The Email or Username field is already exist in the system.";
+        public const string ATTR_USR_LOGON_NAME_EXIST = "The Username or Email field is already exist in the system.";
         public const string ATTR_USR_CONFIRM_PASSWORD_NOT_SAME = "The Password and Confirm Password field must be same.";
 
         //Product
