@@ -23,7 +23,7 @@ namespace ECommerce.BAL.Services
         {
             var result = await _uow.ProductRepository.GetAllAsync();
             if (result == null)
-                throw new Exception(ErrorMessage.GET_PRODUCTS);
+                throw new Exception(Error.GET_PRDCTS_NULL);
 
             return result.Select(data => new ProductDTO
             {
@@ -41,7 +41,7 @@ namespace ECommerce.BAL.Services
         public async Task SaveProductAsync(SaveProductRequest request)
         {
             if (request == null)
-                throw new Exception(ErrorMessage.SAVE_PRODUCT_REQUEST_EMPTY);
+                throw new Exception(Error.SAVE_PRDCTS_REQUEST_NULL);
 
             var isAdd = request.inputProduct.InternalID == Guid.Empty;
             request.inputProduct.InternalID = isAdd ? Guid.NewGuid() : request.inputProduct.InternalID;

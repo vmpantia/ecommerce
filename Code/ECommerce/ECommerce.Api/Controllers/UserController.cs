@@ -36,7 +36,7 @@ namespace ECommerce.Api.Controllers
             try
             {
                 await _user.SaveUserAsync(request);
-                return Ok(SuccessMessage.SAVED_USER);
+                return Ok(Success.SAVED_USER);
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace ECommerce.Api.Controllers
             try
             {
                 await _user.RegisterUserAsync(request);
-                return Ok(SuccessMessage.REGISTERED_USER);
+                return Ok(Success.REGISTERED_USER);
             }
             catch (Exception ex)
             {

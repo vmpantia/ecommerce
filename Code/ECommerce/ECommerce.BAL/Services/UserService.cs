@@ -35,7 +35,7 @@ namespace ECommerce.BAL.Services
         {
             var result = await _uow.UserRepository.GetAllAsync();
             if (result == null)
-                throw new Exception(ErrorMessage.GET_USERS);
+                throw new Exception(Error.GET_USRS_NULL);
 
             return result.Select(data => new UserDTO
             {
@@ -55,7 +55,7 @@ namespace ECommerce.BAL.Services
         public async Task SaveUserAsync(SaveUserRequest request)
         {
             if (request == null)
-                throw new Exception(ErrorMessage.SAVE_USER_REQUEST_EMPTY);
+                throw new Exception(Error.SAVE_USR_REQUEST_NULL);
 
             var isAdd = request.inputUser.InternalID == Guid.Empty;
             request.inputUser.InternalID = isAdd ? Guid.NewGuid() : request.inputUser.InternalID;
@@ -97,11 +97,11 @@ namespace ECommerce.BAL.Services
         public async Task RegisterUserAsync(RegisterUserRequest request)
         {
             if (request == null) /*Check if the request is null or empty*/
-                throw new Exception(ErrorMessage.REGISTER_USER_REQUEST_EMPTY);
+                throw new Exception(Error.REG_USR_REQUEST_NULL);
 
             if (_uow.UserRepository.IsExist(data => data.Username == request.Username ||
                                                     data.Email == request.Email)) /*Check if the email or username is already exist*/
-                throw new Exception(ErrorMessage.LOGON_NAME_ALREADY_EXIST);
+                throw new Exception(Error.ATTR_USR_LOGON_NAME_EXIST);
 
             await _uow.UserRepository.InsertAsync(new User
             {
@@ -123,20 +123,20 @@ namespace ECommerce.BAL.Services
         public UserDTO LoginUser(LoginUserRequest request)
         {
             if (request == null) /*Check if the request is null or empty*/
-                throw new Exception(ErrorMessage.LOGIN_USER_REQUEST_EMPTY);
+                throw new Exception(Error.LOGIN_USR_REQUEST_NULL);
 
             var result = _uow.UserRepository.GetByCondition(data => (data.Username == request.LogonName ||
                                                                    data.Email == request.LogonName) &&
                                                                   data.Password == request.Password);
 
             if (!result.Any()) /*Check if user is exist based on the credentials*/
-                throw new Exception(ErrorMessage.NO_DATA_FOUND);
+                throw new Exception(Error.NO_DATA_FOUND);
 
             if (result.First().Status < Status.ENABLED_INT) /*Check if user is invalid (not activated)*/
-                throw new Exception(ErrorMessage.USER_NOT_ACTIVATED);
+                throw new Exception(Error.ATTR_USR_STATUS_NOT_ACTIVATED);
 
-            if (result.First().Status > Status.ENABLED_INT) /*Check if user is disabled or deletion*/
-                throw new Exception(ErrorMessage.USER_DISABLED);
+            if (result.First().Status > Status.ENABLED_INT) /*Check if user is not able to login*/
+                throw new Exception(Error.ATTR_USR_STATUS_NOT_ENABLED);
 
             var user = result.First();
             return new UserDTO

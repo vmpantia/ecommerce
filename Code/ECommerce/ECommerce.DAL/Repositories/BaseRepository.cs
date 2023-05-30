@@ -29,7 +29,7 @@ namespace ECommerce.DAL.Repositories
         {
             var result = await _table.FindAsync(id);
             if (result == null)
-                throw new Exception(ErrorMessage.NO_DATA_FOUND);
+                throw new Exception(Error.NO_DATA_FOUND);
 
             return result;
         }

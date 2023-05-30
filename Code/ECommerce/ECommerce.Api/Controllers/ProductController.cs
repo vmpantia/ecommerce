@@ -36,7 +36,7 @@ namespace ECommerce.Api.Controllers
             try
             {
                 await _product.SaveProductAsync(request);
-                return Ok(SuccessMessage.SAVED_PRODUCT);
+                return Ok(Success.SAVED_PRODUCT);
             }
             catch (Exception ex)
             {
