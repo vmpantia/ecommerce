@@ -2,6 +2,10 @@
 {
     public interface IEmailService
     {
-        Task SendEmail(string body);
+        Task SendEmailToMany(IEnumerable<string> Tos,
+                                          IEnumerable<string>? Ccs,
+                                          IEnumerable<string>? Bccs,
+                                          string subject,
+                                          string body);
     }
 }

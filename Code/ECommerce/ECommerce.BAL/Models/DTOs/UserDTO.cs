@@ -7,7 +7,7 @@ namespace ECommerce.BAL.Models.DTOs
     {
         public Guid InternalID { get; set; }
         [MaxLength(15)] public string Username { get; set; }
-        [MaxLength(50)] public string Email { get; set; }
+        [MaxLength(50), EmailAddress] public string Email { get; set; }
         [MaxLength(100)] public string Password { get; set; }
         [MaxLength(15)] public string Role { get; set; }
 
