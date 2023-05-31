@@ -57,7 +57,7 @@ namespace ECommerce.BAL.Services
             if (request == null)
                 throw new Exception(Error.SAVE_USR_REQUEST_NULL);
 
-            var isAdd = request.inputUser.InternalID == Guid.Empty;
+            var isAdd = request.inputUser.InternalID == Guid.Empty; /*Check if user is for add or edit*/
             request.inputUser.InternalID = isAdd ? Guid.NewGuid() : request.inputUser.InternalID;
 
             //Upload Profile
