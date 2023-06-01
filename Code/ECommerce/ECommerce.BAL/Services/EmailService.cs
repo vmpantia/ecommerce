@@ -1,28 +1,16 @@
-﻿using MailKit.Net.Smtp;
+﻿using ECommerce.BAL.Contractors;
+using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using MimeKit;
 
-namespace ECommerce.Common.Utils
+namespace ECommerce.BAL.Services
 {
-    public static class EmailUtil
+    public class EmailService : IEmailService
     {
-        private static IConfiguration _config { get; set; }
-        static EmailUtil()
-        {
-            var builder = new HostBuilder()
-            .ConfigureAppConfiguration((hostContext, configBuilder) =>
-            {
-                configBuilder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                // Add any other configuration sources as needed
-            })
-            .Build();
+        private readonly IConfiguration _config;
+        public EmailService(IConfiguration config) => _config = config;
 
-            _config = builder.Services.GetRequiredService<IConfiguration>();
-        }
-
-        public static async Task SendEmail(string to, string subject, string body)
+        public async Task SendEmail(string to, string subject, string body)
         {
             var email = new MimeMessage();
             email.To.Add(MailboxAddress.Parse(to));
@@ -31,7 +19,7 @@ namespace ECommerce.Common.Utils
             await Send(email);
         }
 
-        public static async Task SendEmailToMany(IEnumerable<string> tos,
+        public async Task SendEmailToMany(IEnumerable<string> tos,
                                           IEnumerable<string>? ccs,
                                           IEnumerable<string>? bccs,
                                           string subject,
@@ -39,10 +27,10 @@ namespace ECommerce.Common.Utils
         {
             var email = new MimeMessage();
 
-            foreach (var to in tos)
+            foreach(var to in tos)
                 email.To.Add(MailboxAddress.Parse(to));
 
-            if (ccs != null)
+            if(ccs != null)
                 foreach (var to in ccs)
                     email.Cc.Add(MailboxAddress.Parse(to));
 
@@ -55,7 +43,7 @@ namespace ECommerce.Common.Utils
             await Send(email);
         }
 
-        private static async Task Send(MimeMessage email)
+        private async Task Send(MimeMessage email)
         {
             //Set From
             email.From.Add(MailboxAddress.Parse(_config["Email:Username"]));

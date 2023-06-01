@@ -6,16 +6,17 @@ using ECommerce.DAL.Contractors;
 using ECommerce.BAL.Models.Requests;
 using ECommerce.Common.Constants;
 using ECommerce.DAL.DataAccess.Entities;
-using ECommerce.Common.Utils;
 
 namespace ECommerce.BAL.Services
 {
     public class ProductService : IProductService
     {
         private readonly IUnitOfWork _uow;
-        public ProductService(IUnitOfWork uow)
+        private readonly IFileService _file;
+        public ProductService(IUnitOfWork uow, IFileService file)
         {
             _uow = uow;
+            _file = file;
         }
 
         public async Task<IEnumerable<ProductDTO>> GetProductsAsync()
@@ -29,7 +30,7 @@ namespace ECommerce.BAL.Services
                 InternalID = data.InternalID,
                 Name = data.Name,
                 Description = data.Description,
-                Image = FileUtil.GetURLFilePath(data.Image),
+                Image = _file.GetURLFilePath(data.Image),
                 Status = data.Status,
                 StatusDescription = Parser.ParseStatus(data.Status),
                 CreatedDate = data.CreatedDate,
@@ -47,7 +48,7 @@ namespace ECommerce.BAL.Services
 
             //Upload Image
             if (request.formImage != null)
-                request.inputProduct.Image = await FileUtil.UploadFileAsync(request.inputProduct.InternalID, FileType.PRODUCT, request.formImage);
+                request.inputProduct.Image = await _file.UploadFileAsync(request.inputProduct.InternalID, FileType.PRODUCT, request.formImage);
 
             if (isAdd)
                 await _uow.ProductRepository.InsertAsync(new Product

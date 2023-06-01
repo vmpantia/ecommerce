@@ -4,7 +4,6 @@ using ECommerce.BAL.Models.Requests;
 using ECommerce.Common;
 using ECommerce.Common.Constants;
 using ECommerce.Common.Constants.Messages;
-using ECommerce.Common.Utils;
 using ECommerce.DAL.Contractors;
 using ECommerce.DAL.DataAccess.Entities;
 using Microsoft.Extensions.Configuration;
@@ -18,12 +17,18 @@ namespace ECommerce.BAL.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _uow;
+        private readonly IFileService _file;
         private readonly IConfiguration _config;
+        private readonly IEmailService _email;
         public UserService(IUnitOfWork uow,
-                           IConfiguration config)
+                           IFileService file, 
+                           IConfiguration config,
+                           IEmailService email)
         {
             _uow = uow;
+            _file = file;
             _config = config;
+            _email = email;
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsersAsync()
@@ -39,7 +44,7 @@ namespace ECommerce.BAL.Services
                 Email = data.Email,
                 Password = data.Password,
                 Role = data.Role,
-                Profile = FileUtil.GetURLFilePath(data.Profile),
+                Profile = _file.GetURLFilePath(data.Profile),
                 Status = data.Status,
                 StatusDescription = Parser.ParseStatus(data.Status),
                 CreatedDate = data.CreatedDate,
@@ -57,7 +62,7 @@ namespace ECommerce.BAL.Services
 
             //Upload Profile
             if (request.formProfile != null)
-                request.inputUser.Profile = await FileUtil.UploadFileAsync(request.inputUser.InternalID, FileType.PROFILE, request.formProfile);
+                request.inputUser.Profile = await _file.UploadFileAsync(request.inputUser.InternalID, FileType.PROFILE, request.formProfile);
 
             if (isAdd)
                 await _uow.UserRepository.InsertAsync(new User
@@ -141,7 +146,7 @@ namespace ECommerce.BAL.Services
                 Email = user.Email,
                 Password = user.Password,
                 Role = user.Role,
-                Profile = FileUtil.GetURLFilePath(user.Profile),
+                Profile = _file.GetURLFilePath(user.Profile),
                 Status = user.Status,
                 StatusDescription = Parser.ParseStatus(user.Status),
                 CreatedDate = user.CreatedDate,
