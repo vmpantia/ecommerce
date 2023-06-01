@@ -1,6 +1,6 @@
 ﻿namespace ECommerce.BAL.Contractors
 {
-    public interface IEmailService
+    public interface IEmailUtil
     {
         Task SendEmailToMany(IEnumerable<string> Tos,
                                           IEnumerable<string>? Ccs,

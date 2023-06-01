@@ -1,4 +1,5 @@
-﻿using ECommerce.BAL.Contractors;
+﻿using Azure;
+using ECommerce.BAL.Contractors;
 using ECommerce.BAL.Models.Requests;
 using ECommerce.Common.Constants.Messages;
 using Microsoft.AspNetCore.Authorization;
@@ -63,13 +64,11 @@ namespace ECommerce.Api.Controllers
         {
             try
             {
-                var user = _user.LoginUser(request);
-                var token = _user.GenerateAccesToken(user);
-                return Ok(new
-                {
-                    email = user.Email,
-                    accessToken = token,
-                });
+                var response = _user.LoginUser(request);
+                if (response == null)
+                    return NotFound();
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

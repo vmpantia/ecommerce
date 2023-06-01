@@ -12,8 +12,8 @@ namespace ECommerce.BAL.Services
     public class ProductService : IProductService
     {
         private readonly IUnitOfWork _uow;
-        private readonly IFileService _file;
-        public ProductService(IUnitOfWork uow, IFileService file)
+        private readonly IFileUtil _file;
+        public ProductService(IUnitOfWork uow, IFileUtil file)
         {
             _uow = uow;
             _file = file;
@@ -30,7 +30,7 @@ namespace ECommerce.BAL.Services
                 InternalID = data.InternalID,
                 Name = data.Name,
                 Description = data.Description,
-                Image = _file.GetURLFilePath(data.Image),
+                Image = _file.GetURLFilePath(data.InternalID, data.Image),
                 Status = data.Status,
                 StatusDescription = Parser.ParseStatus(data.Status),
                 CreatedDate = data.CreatedDate,

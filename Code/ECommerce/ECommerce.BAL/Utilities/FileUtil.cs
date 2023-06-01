@@ -3,12 +3,12 @@ using ECommerce.Common.Constants;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
-namespace ECommerce.BAL.Services
+namespace ECommerce.BAL.Utilities
 {
-    public class FileService : IFileService
+    public class FileUtil : IFileUtil
     {
-        private string _directoryPath;
-        public FileService(IWebHostEnvironment environment)
+        private string _resourcesPath;
+        public FileUtil(IWebHostEnvironment environment)
         {
             if (string.IsNullOrEmpty(environment.WebRootPath))
                 environment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), Default.UPLOADS_ROOT);
@@ -17,7 +17,7 @@ namespace ECommerce.BAL.Services
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
 
-            _directoryPath = directoryPath;
+            _resourcesPath = directoryPath;
         }
 
         public async Task<string> UploadFileAsync(Guid internalID, string title, IFormFile? file)
@@ -25,8 +25,10 @@ namespace ECommerce.BAL.Services
             if (file == null || file.Length <= 0)
                 return string.Empty;
 
-            var fileName = string.Format(Format.UPLOADS_FILE_NAME, internalID, title, Path.GetExtension(file.FileName));
-            var filePath = Path.Combine(_directoryPath, fileName);
+            var ownDirectory = string.Format(Format.UPLOADS_DIRECTORY, _resourcesPath, internalID);
+
+            var fileName = string.Format(Format.UPLOADS_FILE_NAME, Guid.NewGuid(), title, Path.GetExtension(file.FileName));
+            var filePath = Path.Combine(ownDirectory, fileName);
             using (FileStream fs = File.Create(filePath))
             {
                 await file.CopyToAsync(fs);
@@ -35,12 +37,13 @@ namespace ECommerce.BAL.Services
             }
         }
 
-        public string GetURLFilePath(string? fileName)
+        public string GetURLFilePath(Guid internalID, string? fileName)
         {
             var urlPath = string.Empty;
-            if(!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileName))
             {
-                var filePath = Path.Combine(_directoryPath, fileName);
+                var ownDirectory = string.Format(Format.UPLOADS_DIRECTORY, _resourcesPath, internalID);
+                var filePath = Path.Combine(ownDirectory, fileName);
                 if (File.Exists(filePath))
                     urlPath = Path.Combine(Default.HOST_URL, Default.UPLOADS_URL_FOLDER_PATH, fileName);
             }

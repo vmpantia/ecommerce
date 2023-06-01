@@ -2,9 +2,9 @@
 
 namespace ECommerce.BAL.Contractors
 {
-    public interface IFileService
+    public interface IFileUtil
     {
         Task<string> UploadFileAsync(Guid internalID, string title, IFormFile? file);
-        string GetURLFilePath(string? fileName);
+        string GetURLFilePath(Guid internalID, string? fileName);
     }
 }

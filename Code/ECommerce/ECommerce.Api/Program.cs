@@ -1,5 +1,6 @@
 using ECommerce.BAL.Contractors;
 using ECommerce.BAL.Services;
+using ECommerce.BAL.Utilities;
 using ECommerce.DAL.Contractors;
 using ECommerce.DAL.DataAccess;
 using ECommerce.DAL.Repositories;
@@ -19,8 +20,8 @@ builder.Services.AddDbContext<ECommerceDbContext>(option =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IEmailUtil, EmailUtil>();
+builder.Services.AddScoped<IFileUtil, FileUtil>();
 
 // Setup JWT Token for Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -6,29 +6,24 @@ using ECommerce.Common.Constants;
 using ECommerce.Common.Constants.Messages;
 using ECommerce.DAL.Contractors;
 using ECommerce.DAL.DataAccess.Entities;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace ECommerce.BAL.Services
 {
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _uow;
-        private readonly IFileService _file;
-        private readonly IConfiguration _config;
-        private readonly IEmailService _email;
-        public UserService(IUnitOfWork uow,
-                           IFileService file, 
-                           IConfiguration config,
-                           IEmailService email)
+        private readonly IFileUtil _file;
+        private readonly IEmailUtil _email;
+        private readonly IJwtUtil _jwt;
+        public UserService(IUnitOfWork uow, 
+                            IFileUtil file, 
+                            IEmailUtil email,
+                            IJwtUtil jwt)
         {
             _uow = uow;
             _file = file;
-            _config = config;
             _email = email;
+            _jwt = jwt;
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsersAsync()
@@ -44,7 +39,7 @@ namespace ECommerce.BAL.Services
                 Email = data.Email,
                 Password = data.Password,
                 Role = data.Role,
-                Profile = _file.GetURLFilePath(data.Profile),
+                Profile = _file.GetURLFilePath(data.InternalID, data.Profile),
                 Status = data.Status,
                 StatusDescription = Parser.ParseStatus(data.Status),
                 CreatedDate = data.CreatedDate,
@@ -120,7 +115,7 @@ namespace ECommerce.BAL.Services
             //TODO: Send Activation Email
         }
 
-        public UserDTO LoginUser(LoginUserRequest request)
+        public LoginDTO LoginUser(LoginUserRequest request)
         {
             if (request == null) /*Check if the request is null or empty*/
                 throw new Exception(Error.LOGIN_USR_REQUEST_NULL);
@@ -139,44 +134,11 @@ namespace ECommerce.BAL.Services
                 throw new Exception(Error.ATTR_USR_STATUS_NOT_ENABLED);
 
             var user = result.First();
-            return new UserDTO
+            return new LoginDTO
             {
-                InternalID = user.InternalID,
-                Username = user.Username,
                 Email = user.Email,
-                Password = user.Password,
-                Role = user.Role,
-                Profile = _file.GetURLFilePath(user.Profile),
-                Status = user.Status,
-                StatusDescription = Parser.ParseStatus(user.Status),
-                CreatedDate = user.CreatedDate,
-                ModifiedDate = user.ModifiedDate
+                AccessToken = _jwt.GenerateAccesToken(user)
             };
-        }
-
-        public string GenerateAccesToken(UserDTO user)
-        {
-            //Get JWT Security Key
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-
-            //Get Credentials using JWT Security Key
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            //Create Identity Claims such as Actor, Name, Email, Role and etc.
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.Actor, user.InternalID.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
-            };
-
-            //Create Security Token based on the JWT Issuer, JWT Audience, Claims, Expirations and Credentials
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"], claims,
-                                             expires: DateTime.Now.AddHours(1), signingCredentials: credentials);
-
-            //Create User Access Token
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

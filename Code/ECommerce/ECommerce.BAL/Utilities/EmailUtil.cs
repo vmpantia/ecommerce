@@ -3,12 +3,12 @@ using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 
-namespace ECommerce.BAL.Services
+namespace ECommerce.BAL.Utilities
 {
-    public class EmailService : IEmailService
+    public class EmailUtil : IEmailUtil
     {
         private readonly IConfiguration _config;
-        public EmailService(IConfiguration config) => _config = config;
+        public EmailUtil(IConfiguration config) => _config = config;
 
         public async Task SendEmail(string to, string subject, string body)
         {
@@ -27,10 +27,10 @@ namespace ECommerce.BAL.Services
         {
             var email = new MimeMessage();
 
-            foreach(var to in tos)
+            foreach (var to in tos)
                 email.To.Add(MailboxAddress.Parse(to));
 
-            if(ccs != null)
+            if (ccs != null)
                 foreach (var to in ccs)
                     email.Cc.Add(MailboxAddress.Parse(to));
 
