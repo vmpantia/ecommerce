@@ -26,6 +26,8 @@ namespace ECommerce.BAL.Utilities
                 return string.Empty;
 
             var ownDirectory = string.Format(Format.UPLOADS_DIRECTORY, _resourcesPath, internalID);
+            if (!Directory.Exists(ownDirectory))
+                Directory.CreateDirectory(ownDirectory);
 
             var fileName = string.Format(Format.UPLOADS_FILE_NAME, Guid.NewGuid(), title, Path.GetExtension(file.FileName));
             var filePath = Path.Combine(ownDirectory, fileName);
