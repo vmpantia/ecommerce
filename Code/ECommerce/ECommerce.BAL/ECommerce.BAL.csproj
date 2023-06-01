@@ -7,17 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="4.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ECommerce.Common\ECommerce.Common.csproj" />
     <ProjectReference Include="..\ECommerce.DAL\ECommerce.DAL.csproj" />
-  </ItemGroup>
-	
-  <ItemGroup>
-   <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
 </Project>

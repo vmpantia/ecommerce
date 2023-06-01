@@ -1,15 +1,26 @@
-﻿using ECommerce.BAL.Contractors;
-using ECommerce.Common.Constants;
+﻿using ECommerce.Common.Constants;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace ECommerce.BAL.Services
+namespace ECommerce.Common.Utils
 {
-    public class FileService : IFileService
+    public static class FileUtil
     {
-        private string _directoryPath;
-        public FileService(IWebHostEnvironment environment)
+        private static string _directoryPath { get; set; }
+        static FileUtil()
         {
+            var builder = new HostBuilder()
+            .ConfigureAppConfiguration((hostContext, configBuilder) =>
+            {
+                configBuilder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                // Add any other configuration sources as needed
+            })
+            .Build();
+
+            var environment = builder.Services.GetRequiredService<IWebHostEnvironment>();
             if (string.IsNullOrEmpty(environment.WebRootPath))
                 environment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), Default.UPLOADS_ROOT);
 
@@ -20,7 +31,7 @@ namespace ECommerce.BAL.Services
             _directoryPath = directoryPath;
         }
 
-        public async Task<string> UploadFileAsync(Guid internalID, string title, IFormFile? file)
+        public static async Task<string> UploadFileAsync(Guid internalID, string title, IFormFile? file)
         {
             if (file == null || file.Length <= 0)
                 return string.Empty;
@@ -35,10 +46,10 @@ namespace ECommerce.BAL.Services
             }
         }
 
-        public string GetURLFilePath(string? fileName)
+        public static string GetURLFilePath(string? fileName)
         {
             var urlPath = string.Empty;
-            if(!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileName))
             {
                 var filePath = Path.Combine(_directoryPath, fileName);
                 if (File.Exists(filePath))
