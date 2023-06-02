@@ -1,7 +1,7 @@
 ﻿using ECommerce.BAL.Contractors;
+using ECommerce.BAL.Extensions;
 using ECommerce.BAL.Models.DTOs;
 using ECommerce.BAL.Models.Requests;
-using ECommerce.Common;
 using ECommerce.Common.Constants;
 using ECommerce.Common.Constants.Messages;
 using ECommerce.DAL.Contractors;
@@ -32,18 +32,12 @@ namespace ECommerce.BAL.Services
             if (result == null)
                 throw new Exception(Error.GET_USRS_NULL);
 
-            return result.Select(data => new UserDTO
+            return result.Select(data =>
             {
-                InternalID = data.InternalID,
-                Username = data.Username,
-                Email = data.Email,
-                Password = data.Password,
-                Role = data.Role,
-                Profile = _file.GetURLFilePath(data.InternalID, data.Profile),
-                Status = data.Status,
-                StatusDescription = Parser.ParseStatus(data.Status),
-                CreatedDate = data.CreatedDate,
-                ModifiedDate = data.ModifiedDate
+                var dto = data.ConvertDTO();
+                //Get URL Path
+                dto.Profile = _file.GetURLFilePath(data.InternalID, data.Profile);
+                return dto;
             });
         }
 
