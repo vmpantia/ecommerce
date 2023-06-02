@@ -1,7 +1,9 @@
 ﻿using ECommerce.BAL.Contractors;
 using ECommerce.BAL.Extensions;
 using ECommerce.BAL.Models.DTOs;
+using ECommerce.BAL.Models.enums;
 using ECommerce.BAL.Models.Requests;
+using ECommerce.BAL.Utilities;
 using ECommerce.Common.Constants;
 using ECommerce.Common.Constants.Messages;
 using ECommerce.DAL.Contractors;
@@ -15,6 +17,7 @@ namespace ECommerce.BAL.Services
         private readonly IFileUtil _file;
         private readonly IEmailUtil _email;
         private readonly IJwtUtil _jwt;
+        private readonly IValidateUtil _validate;
         public UserService(IUnitOfWork uow, 
                             IFileUtil file, 
                             IEmailUtil email,
@@ -24,6 +27,7 @@ namespace ECommerce.BAL.Services
             _file = file;
             _email = email;
             _jwt = jwt;
+            _validate = new ValidateUtil(uow);
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsersAsync()
@@ -46,40 +50,52 @@ namespace ECommerce.BAL.Services
             if (request == null)
                 throw new Exception(Error.SAVE_USR_REQUEST_NULL);
 
-            var isAdd = request.inputUser.InternalID == Guid.Empty; /*Check if user is for add or edit*/
-            request.inputUser.InternalID = isAdd ? Guid.NewGuid() : request.inputUser.InternalID;
+            var type = request.inputUser.InternalID == Guid.Empty ? ProcessType.Add : ProcessType.Edit; /*Check if user is for add or edit*/
+
+            //Validate userDTO
+            var valResult = await _validate.ValidateUserAsync(request.inputUser, type);
+            if (!string.IsNullOrEmpty(valResult)) /*Check if valResult have value*/
+                throw new Exception(valResult);
+
+            //Generate new guid or use old guid
+            var internalID = type == ProcessType.Add ? Guid.NewGuid() : request.inputUser.InternalID;
 
             //Upload Profile
             if (request.formProfile != null)
-                request.inputUser.Profile = await _file.UploadFileAsync(request.inputUser.InternalID, FileType.PROFILE, request.formProfile);
+                request.inputUser.Profile = await _file.UploadFileAsync(internalID, FileType.PROFILE, request.formProfile);
 
-            if (isAdd)
-                await _uow.UserRepository.InsertAsync(new User
-                {
-                    InternalID = request.inputUser.InternalID,
-                    Username = request.inputUser.Username,
-                    Email = request.inputUser.Email,
-                    Password = request.inputUser.Password,
-                    Role = request.inputUser.Role,
-                    Profile = request.inputUser.Profile,
-                    Status = request.inputUser.Status,
-                    CreatedDate = DateTime.Now,
-                    ModifiedDate = null
-                });
-            else
-                await _uow.UserRepository.UpdateAsync(request.inputUser.InternalID,
-                    new
+            switch (type)
+            {
+                case ProcessType.Add:
+                    await _uow.UserRepository.InsertAsync(new User
                     {
-                        //request.inputUser.InternalID,
-                        request.inputUser.Username,
-                        request.inputUser.Email,
-                        request.inputUser.Password,
-                        request.inputUser.Role,
-                        request.inputUser.Profile,
-                        request.inputUser.Status,
-                        //request.inputUser.CreatedDate,
-                        ModifiedDate = DateTime.Now
+                        InternalID = internalID,
+                        Username = request.inputUser.Username,
+                        Email = request.inputUser.Email,
+                        Password = request.inputUser.Password,
+                        Role = request.inputUser.Role,
+                        Profile = request.inputUser.Profile,
+                        Status = request.inputUser.Status,
+                        CreatedDate = DateTime.Now,
+                        ModifiedDate = null
                     });
+                    break;
+                case ProcessType.Edit:
+                    await _uow.UserRepository.UpdateAsync(internalID,
+                        new
+                        {
+                            //request.inputUser.InternalID,
+                            request.inputUser.Username,
+                            request.inputUser.Email,
+                            request.inputUser.Password,
+                            request.inputUser.Role,
+                            request.inputUser.Profile,
+                            request.inputUser.Status,
+                            //request.inputUser.CreatedDate,
+                            ModifiedDate = DateTime.Now
+                        });
+                    break;
+            }
             await _uow.SaveAsync();
         }
 
