@@ -23,6 +23,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IEmailUtil, EmailUtil>();
 builder.Services.AddScoped<IFileUtil, FileUtil>();
 builder.Services.AddScoped<IJwtUtil, JwtUtil>();
+builder.Services.AddScoped<IValidateUtil, ValidateUtil>();
 
 // Setup JWT Token for Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

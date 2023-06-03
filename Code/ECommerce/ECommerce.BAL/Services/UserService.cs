@@ -21,13 +21,14 @@ namespace ECommerce.BAL.Services
         public UserService(IUnitOfWork uow, 
                             IFileUtil file, 
                             IEmailUtil email,
-                            IJwtUtil jwt)
+                            IJwtUtil jwt,
+                            IValidateUtil validate)
         {
             _uow = uow;
             _file = file;
             _email = email;
             _jwt = jwt;
-            _validate = new ValidateUtil(uow);
+            _validate = validate;
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsersAsync()

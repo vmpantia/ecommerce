@@ -2,6 +2,7 @@
 using ECommerce.BAL.Extensions;
 using ECommerce.BAL.Models.DTOs;
 using ECommerce.BAL.Models.enums;
+using ECommerce.Common.Constants.Messages;
 using ECommerce.DAL.Contractors;
 
 namespace ECommerce.BAL.Utilities
@@ -20,16 +21,16 @@ namespace ECommerce.BAL.Utilities
                 var oldDto = await _uow.UserRepository.GetByIDAsync(dto.InternalID);
                 changedProperties = GetChangedProperty(dto, oldDto.ConvertDTO());
                 if (!changedProperties.Any())
-                    return "No changes made in user.";
+                    return Error.ATTR_USR_NO_CHANGES_MADE;
             }
 
             if (type == ProcessType.Add || changedProperties.Exists(data => data == dto.Username.GetType().Name))
                 if (_uow.UserRepository.IsExist(data => data.Username == dto.Username))
-                    return "The Username field is already exist in the system.";
+                    return Error.ATTR_USR_USERNAME_EXIST;
 
             if (type == ProcessType.Add || changedProperties.Exists(data => data == dto.Email.GetType().Name))
                 if (_uow.UserRepository.IsExist(data => data.Email == dto.Email))
-                    return "The Email field is already exist in the system.";
+                    return Error.ATTR_USR_EMAIL_EXIST;
 
             return string.Empty; /*No error found*/
         }
@@ -39,7 +40,7 @@ namespace ECommerce.BAL.Utilities
             var changedProperties = new List<string>();
 
             if (newDto == null || oldDto == null)
-                throw new Exception("Parameters cannot be null.");
+                throw new Exception(Error.PARAMETERS_NULL);
 
             var properties = newDto.GetType().GetProperties();
             foreach (var property in properties)
