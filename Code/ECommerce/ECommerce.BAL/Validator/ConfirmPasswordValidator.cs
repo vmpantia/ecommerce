@@ -10,7 +10,7 @@ namespace ECommerce.BAL.Validator
         {
             var model = (RegisterUserRequest)validationContext.ObjectInstance;
             if (model != null && value != null)
-                if (model.Password != (string)value)
+                if (model.inputUser.Password != (string)value)
                     return new ValidationResult(Error.ATTR_USR_CONFIRM_PASSWORD_NOT_SAME);
 
             return ValidationResult.Success;

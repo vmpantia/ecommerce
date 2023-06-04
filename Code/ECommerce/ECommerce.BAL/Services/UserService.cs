@@ -113,21 +113,21 @@ namespace ECommerce.BAL.Services
             if (request == null) /*Check if the request is null or empty*/
                 throw new Exception(Error.REG_USR_REQUEST_NULL);
 
-            if (_uow.UserRepository.IsExist(data => data.Username == request.Username ||
-                                                    data.Email == request.Email)) /*Check if the email or username is already exist*/
+            if (_uow.UserRepository.IsExist(data => data.Username == request.inputUser.Username ||
+                                                    data.Email == request.inputUser.Email)) /*Check if the email or username is already exist*/
                 throw new Exception(Error.ATTR_USR_LOGON_NAME_EXIST);
 
             await _uow.UserRepository.InsertAsync(new User
             {
                 InternalID = Guid.NewGuid(),
-                Username = request.Username,
-                Email = request.Email,
-                Password = request.Password,
+                Username = request.inputUser.Username,
+                Email = request.inputUser.Email,
+                Password = request.inputUser.Password,
                 Role = "User",
-                FirstName = request.FirstName,
-                MiddleName = request.MiddleName,
-                LastName = request.LastName,
-                BirthDate = request.BirthDate,
+                FirstName = request.inputUser.FirstName,
+                MiddleName = request.inputUser.MiddleName,
+                LastName = request.inputUser.LastName,
+                BirthDate = request.inputUser.BirthDate,
                 Profile = null,
                 Status = Status.INVALID_INT,
                 CreatedDate = DateTime.Now,
