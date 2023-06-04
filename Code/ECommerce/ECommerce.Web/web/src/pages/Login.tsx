@@ -1,6 +1,22 @@
+import { useState } from 'react'
+
+//Icons
 import { LockClosedIcon } from '@heroicons/react/24/solid'
 
+//Models
+import { LoginUserRequest } from '../models/requests/LoginUserRequest'
+
 const Login = () => {
+    const[loginUser, setLoginUser] = useState({} as LoginUserRequest);
+
+    const onTextValueChange = (e:any) => {
+        setLoginUser(data => {
+            return {...data, [e.target.name]:e.target.value}
+        });
+    }
+
+    
+
     return (
         <div className='w-full h-screen flex justify-center items-center bg-gray-100'>
             <section className='p-9 border rounded w-96 bg-white'>
@@ -10,11 +26,21 @@ const Login = () => {
                 </header>
                 <div>
                     <label className='text-sm font-medium'>Logon Name:</label>
-                    <input className='w-full px-2 py-1.5 my-2 border rounded' type='text' placeholder='Enter your username or email' />
+                    <input className='w-full px-2 py-1.5 my-2 border rounded' 
+                            type='text' 
+                            placeholder='Enter your username or email'
+                            name='logonName'
+                            value={loginUser.logonName}
+                            onChange={onTextValueChange} />
                 </div>
                 <div>
                     <label className='text-sm font-medium'>Password:</label>
-                    <input className='w-full px-2 py-1.5 my-2 border rounded'type='passowrd' placeholder='Enter your password' />
+                    <input className='w-full px-2 py-1.5 my-2 border rounded' 
+                            type='passowrd' 
+                            placeholder='Enter your password'
+                            name='password'
+                            value={loginUser.password}
+                            onChange={onTextValueChange} />
                 </div>
                 
                 <div className='mt-4'>
