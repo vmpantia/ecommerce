@@ -24,7 +24,7 @@ const Register = () => {
 
     return (
         <div className='w-full h-screen flex justify-center items-center bg-gray-100'>
-            <section className='p-9 border rounded w-600 bg-white'>
+            <section className='p-9 border rounded bg-white drop-shadow-xl w-1/2'>
                 <header className='w-full flex text-2xl font-medium pb-3 mb-2 border-b'>
                     <UserPlusIcon className='w-6 mr-2 mt-1'/>
                     Register Account
@@ -34,52 +34,59 @@ const Register = () => {
                     <div>
                         <InputField type="text" 
                                     placeholder="Enter your username" 
-                                    value={user.userName}
+                                    required={true}
                                     name="username"
                                     label="Username"
+                                    value={user.userName}
                                     onValueChangedHandler={onValueChange} />
                         <InputField type="email" 
                                     placeholder="Enter your email" 
-                                    value={user.userName}
+                                    required={true}
                                     name="email"
                                     label="Email"
+                                    value={user.email}
                                     onValueChangedHandler={onValueChange} />
                         <InputField type="password" 
                                     placeholder="Enter your password" 
-                                    value={user.userName}
+                                    required={true}
                                     name="password"
                                     label="Password"
+                                    value={user.password}
                                     onValueChangedHandler={onValueChange} />
                         <InputField type="password" 
                                     placeholder="Enter your password" 
-                                    value={confirmPassword}
+                                    required={true}
                                     name="password"
                                     label="Confirm Password"
+                                    value={confirmPassword}
                                     onValueChangedHandler={(e) => setConfirmPassword(e.target.value)} />
                     </div>
                     <div>
                         <InputField type="text" 
                                     placeholder="Enter your first name" 
-                                    value={user.userName}
+                                    required={true}
                                     name="firstName"
                                     label="First Name"
+                                    value={user.firstName}
                                     onValueChangedHandler={onValueChange} />
                         <InputField type="text" 
                                     placeholder="Enter your middle name" 
-                                    value={user.userName}
                                     name="middleName"
                                     label="Middle Name"
+                                    value={user.middleName}
                                     onValueChangedHandler={onValueChange} />
                         <InputField type="text" 
                                     placeholder="Enter your last name" 
-                                    value={user.lastName}
+                                    required={true}
                                     name="lastName"
                                     label="Last Name"
+                                    value={user.lastName}
                                     onValueChangedHandler={onValueChange} />
                         <InputField type="date" 
-                                    value={user.birthDate}
+                                    required={true}
                                     name="birthDate"
                                     label="Birthdate"
+                                    value={user.birthDate}
                                     onValueChangedHandler={onValueChange} />
                     </div>
                 </section>
