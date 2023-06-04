@@ -7,6 +7,8 @@ namespace ECommerce.DAL.DataAccess.Entities
         [Key] public Guid InternalID { get; set; }
         [MaxLength(30)] public string Name { get; set; }
         [MaxLength(100)] public string? Description { get; set; }
+
+        //Image
         public string? Image { get; set; }
 
 

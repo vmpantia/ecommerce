@@ -9,6 +9,12 @@ namespace ECommerce.DAL.DataAccess.Entities
         [MaxLength(50)] public string Email { get; set; }
         [MaxLength(100)] public string Password { get; set; }
         [MaxLength(15)] public string Role { get; set; }
+        [MaxLength(40)] public string FirstName { get; set; }
+        [MaxLength(40)] public string? MiddleName { get; set; }
+        [MaxLength(40)] public string LastName { get; set; }
+        public DateTime BirthDate { get; set; }
+
+        //Profile
         public string? Profile { get; set; }
 
         //Common Details
