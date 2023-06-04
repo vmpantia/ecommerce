@@ -21,11 +21,14 @@ namespace ECommerce.BAL.Utilities
             //Get Credentials using JWT Security Key
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            //Create Identity Claims such as Actor, Name, Email, Role and etc.
+            //Create Identity Claims such as Actor, Name, Givenname, Surname, Birthdate Email, Role and etc.
             var claims = new[]
             {
                 new Claim(ClaimTypes.Actor, user.InternalID.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.GivenName, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName),
+                new Claim(ClaimTypes.DateOfBirth, user.BirthDate.ToShortDateString()),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role)
             };
