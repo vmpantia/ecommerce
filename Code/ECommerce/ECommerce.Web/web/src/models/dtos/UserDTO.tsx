@@ -7,10 +7,10 @@ export interface UserDTO {
     firstName:string;
     middleName:string;
     lastName:string;
-    birthDate:Date;
+    birthDate:string;
     profile:string;
     status:string;
     statusDescription:string;
-    createDate:Date;
-    modifiedDate:Date;
+    createDate:string;
+    modifiedDate:string;
 }
