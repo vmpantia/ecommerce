@@ -14,12 +14,21 @@ import { STRING_EMPTY } from "../utils/Constants";
 
 const Register = () => {
     const[user, setUser] = useState({} as UserDTO);
-    const[confirmPassword, setConfirmPassword] = useState(STRING_EMPTY)
+    const[confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
+    const[errors, setErrors] = useState([] as string[]);
     
     const onValueChange = (e:any) => {
         setUser(data => {
-            return {...data, [e.target.name]:e.target.value}
+            return {...data, [e.target.name] : e.target.value}
         });
+    }
+
+    const onButtonClick = () => {
+        const tmp = [];
+        tmp.push("weak ka");
+        tmp.push("weak mo");
+
+        setErrors(tmp);
     }
 
     return (
@@ -38,6 +47,7 @@ const Register = () => {
                                 name="username"
                                 label="Username"
                                 value={user.userName}
+                                errors={errors}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="email" 
                                 placeholder="Enter your email" 
@@ -93,7 +103,7 @@ const Register = () => {
                 </section>
                 
                 <div className='mt-4'>
-                    <button className='w-full p-2 text-sm bg-blue-600 rounded text-white'>Register</button>
+                    <button className='w-full p-2 text-sm bg-blue-600 rounded text-white' onClick={onButtonClick}>Register</button>
                 </div>
             </section>
         </div>
