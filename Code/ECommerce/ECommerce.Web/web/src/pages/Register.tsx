@@ -23,7 +23,7 @@ const Register = () => {
     }
 
     return (
-        <div className='flex justify-center bg-gray-100'>
+        <div className='flex justify-center'>
             <section className='w-1/2 p-9 my-10 border rounded bg-white drop-shadow-xl '>
                 <header className='w-full flex text-2xl font-medium border-b pb-3'>
                     <UserPlusIcon className='w-6 mr-2 mt-1'/>
