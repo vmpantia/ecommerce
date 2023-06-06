@@ -25,6 +25,20 @@ builder.Services.AddScoped<IFileUtil, FileUtil>();
 builder.Services.AddScoped<IJwtUtil, JwtUtil>();
 builder.Services.AddScoped<IValidateUtil, ValidateUtil>();
 
+
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Policy",
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000/")
+                                .AllowAnyOrigin()
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+
 // Setup JWT Token for Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -57,7 +71,8 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); /*Add JWT Authentication*/
+app.UseCors("Policy"); /*Use Policy CORS*/
+app.UseAuthentication(); /*Use JWT Authentication*/
 app.UseAuthorization();
 
 app.MapControllers();
