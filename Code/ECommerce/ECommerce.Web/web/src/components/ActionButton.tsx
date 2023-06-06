@@ -1,5 +1,3 @@
-import React from 'react'
-
 //Properties
 import { ActionButtonProps } from '../models/props/ActionButtonProps'
 
