@@ -102,9 +102,10 @@ const Register = () => {
                                 onValueChangedHandler={onValueChange} />
                 </section>
                 
-                <div className='mt-4'>
-                    <button className='w-full p-2 text-sm bg-blue-600 rounded text-white' onClick={onButtonClick}>Register</button>
-                </div>
+                <section className='w-full flex justify-end mt-4'>
+                    <button className='py-1.5 px-4 mr-2 text-sm bg-blue-600 rounded text-white' onClick={onButtonClick}>Register</button>
+                    <button className='py-1.5 px-4 text-sm bg-red-600 rounded text-white' onClick={onButtonClick}>Back</button>
+                </section>
             </section>
         </div>
     )
