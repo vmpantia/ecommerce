@@ -9,7 +9,7 @@ export interface UserDTO {
     lastName:string;
     birthDate:string;
     profile:string;
-    status:string;
+    status:number;
     statusDescription:string;
     createDate:string;
     modifiedDate:string;

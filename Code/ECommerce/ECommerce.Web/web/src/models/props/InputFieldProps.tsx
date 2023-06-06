@@ -5,6 +5,6 @@ export interface InputFieldProps {
     name:string;
     label:string;
     value:string | number | readonly string[] | undefined;
-    errors?:string[];
+    errorMessage?:string;
     onValueChangedHandler: (e:any) => void;    
 }

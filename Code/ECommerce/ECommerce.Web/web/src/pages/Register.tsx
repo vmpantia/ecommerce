@@ -1,35 +1,45 @@
 import { useState } from "react"
+import axiosAPI from "../api/axiosAPI";
 
 //Icons
 import { UserPlusIcon } from "@heroicons/react/24/solid"
 
 //Models
 import { UserDTO } from "../models/dtos/UserDTO"
+import { RegisterUserRequest } from "../models/requests/RegisterUserRequest";
 
 //Components
 import InputField from "../components/InputField";
 
-//Constants
+//Utilities
 import { STRING_EMPTY } from "../utils/Constants";
-import axiosAPI from "../api/axiosAPI";
-import { RegisterUserRequest } from "../models/requests/RegisterUserRequest";
+import { GetErrorByName } from "../utils/Common";
 
 const Register = () => {
+    //React Hooks
     const[user, setUser] = useState({} as UserDTO);
     const[confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
     const[inputErrors, setInputErrors] = useState();
     
+
+    //onValueChange will execute once the InputFields value is changed
+    //It will set a value in the properties of user hook
     const onValueChange = (e:any) => {
         setUser(data => {
             return {...data, [e.target.name] : e.target.value}
         });
     }
 
-    const onButtonClick = async () => {
+    //onRegisterClick will execute once the Register button clicked 
+    //It will call the User/RegisterUser API to process the request
+    const onRegisterClick = async () => {
         let request:RegisterUserRequest = { 
             inputUser:user,
             confirmPassword:confirmPassword
         };
+        //Set default value for register user
+        request.inputUser.role = "User";
+        request.inputUser.status = -1;
         await axiosAPI.post("User/RegisterUser",  /* API Url */
                             JSON.stringify(request) /* Request of Body */
                             )
@@ -59,7 +69,7 @@ const Register = () => {
                                 name="username"
                                 label="Username"
                                 value={user.userName}
-                                errors={inputErrors && inputErrors['inputUser.Username']}
+                                errorMessage={GetErrorByName(inputErrors, "inputUser.Username")} //Error Message Properties
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="email" 
                                 placeholder="Enter your email" 
@@ -67,7 +77,7 @@ const Register = () => {
                                 name="email"
                                 label="Email"
                                 value={user.email}
-                                errors={inputErrors && inputErrors['inputUser.Email']}
+                                errorMessage={GetErrorByName(inputErrors, "inputUser.Email")} //Error Message Properties
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="password" 
                                 placeholder="Enter your password" 
@@ -75,7 +85,7 @@ const Register = () => {
                                 name="password"
                                 label="Password"
                                 value={user.password}
-                                errors={inputErrors && inputErrors['inputUser.Password']}
+                                errorMessage={GetErrorByName(inputErrors, "inputUser.Password")} //Error Message Properties
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="password" 
                                 placeholder="Enter your password" 
@@ -83,7 +93,7 @@ const Register = () => {
                                 name="confirmPassword"
                                 label="Confirm Password"
                                 value={confirmPassword}
-                                errors={inputErrors && inputErrors['ConfirmPassword']}
+                                errorMessage={GetErrorByName(inputErrors, "ConfirmPassword")} //Error Message Properties
                                 onValueChangedHandler={(e) => setConfirmPassword(e.target.value)} />
                 </section>
                 
@@ -95,14 +105,14 @@ const Register = () => {
                                 name="firstName"
                                 label="First Name"
                                 value={user.firstName}
-                                errors={inputErrors && inputErrors['inputUser.FirstName']}
+                                errorMessage={GetErrorByName(inputErrors, "inputUser.FirstName")} //Error Message Properties
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="text" 
                                 placeholder="Enter your middle name" 
                                 name="middleName"
                                 label="Middle Name"
                                 value={user.middleName}
-                                errors={inputErrors && inputErrors['inputUser.MiddleName']}
+                                errorMessage={GetErrorByName(inputErrors, "inputUser.MiddleName")} //Error Message Properties
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="text" 
                                 placeholder="Enter your last name" 
@@ -110,20 +120,20 @@ const Register = () => {
                                 name="lastName"
                                 label="Last Name"
                                 value={user.lastName}
-                                errors={inputErrors && inputErrors['inputUser.LastName']}
+                                errorMessage={GetErrorByName(inputErrors, "inputUser.LastName")} //Error Message Properties
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="date" 
                                 required={true}
                                 name="birthDate"
                                 label="Birthdate"
                                 value={user.birthDate}
-                                errors={inputErrors && inputErrors['inputUser.BirthDate']}
+                                errorMessage={GetErrorByName(inputErrors, "inputUser.BirthDate")} //Error Message Properties
                                 onValueChangedHandler={onValueChange} />
                 </section>
                 
                 <section className='w-full flex justify-end mt-4'>
-                    <button className='py-1.5 px-4 mr-2 text-sm bg-blue-600 rounded text-white' onClick={onButtonClick}>Register</button>
-                    <button className='py-1.5 px-4 text-sm bg-red-600 rounded text-white' onClick={onButtonClick}>Back</button>
+                    <button className='py-1.5 px-4 mr-2 text-sm bg-blue-600 rounded text-white' onClick={onRegisterClick}>Register</button>
+                    <button className='py-1.5 px-4 text-sm bg-red-600 rounded text-white'>Back</button>
                 </section>
             </section>
         </div>
