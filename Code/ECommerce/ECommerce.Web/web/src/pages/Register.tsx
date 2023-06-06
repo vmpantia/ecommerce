@@ -11,11 +11,13 @@ import InputField from "../components/InputField";
 
 //Constants
 import { STRING_EMPTY } from "../utils/Constants";
+import axiosAPI from "../api/axiosAPI";
+import { RegisterUserRequest } from "../models/requests/RegisterUserRequest";
 
 const Register = () => {
     const[user, setUser] = useState({} as UserDTO);
     const[confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
-    const[errors, setErrors] = useState([] as string[]);
+    const[inputErrors, setInputErrors] = useState();
     
     const onValueChange = (e:any) => {
         setUser(data => {
@@ -23,12 +25,22 @@ const Register = () => {
         });
     }
 
-    const onButtonClick = () => {
-        const tmp = [];
-        tmp.push("weak ka");
-        tmp.push("weak mo");
-
-        setErrors(tmp);
+    const onButtonClick = async () => {
+        let request:RegisterUserRequest = { 
+            inputUser:user,
+            confirmPassword:confirmPassword
+        };
+        await axiosAPI.post("User/RegisterUser",  /* API Url */
+                            JSON.stringify(request) /* Request of Body */
+                            )
+                            .then(res => {
+                                if(res.status === 200)
+                                    console.log(res.data);
+                            })
+                            .catch(err => {
+                                if(err.response.data.errors !== null || err.response.data.errors !== undefined)
+                                    setInputErrors(err.response.data.errors);
+                            });
     }
 
     return (
@@ -47,7 +59,7 @@ const Register = () => {
                                 name="username"
                                 label="Username"
                                 value={user.userName}
-                                errors={errors}
+                                errors={inputErrors && inputErrors['inputUser.Username']}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="email" 
                                 placeholder="Enter your email" 
@@ -55,6 +67,7 @@ const Register = () => {
                                 name="email"
                                 label="Email"
                                 value={user.email}
+                                errors={inputErrors && inputErrors['inputUser.Email']}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="password" 
                                 placeholder="Enter your password" 
@@ -62,13 +75,15 @@ const Register = () => {
                                 name="password"
                                 label="Password"
                                 value={user.password}
+                                errors={inputErrors && inputErrors['inputUser.Password']}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="password" 
                                 placeholder="Enter your password" 
                                 required={true}
-                                name="password"
+                                name="confirmPassword"
                                 label="Confirm Password"
                                 value={confirmPassword}
+                                errors={inputErrors && inputErrors['ConfirmPassword']}
                                 onValueChangedHandler={(e) => setConfirmPassword(e.target.value)} />
                 </section>
                 
@@ -80,12 +95,14 @@ const Register = () => {
                                 name="firstName"
                                 label="First Name"
                                 value={user.firstName}
+                                errors={inputErrors && inputErrors['inputUser.FirstName']}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="text" 
                                 placeholder="Enter your middle name" 
                                 name="middleName"
                                 label="Middle Name"
                                 value={user.middleName}
+                                errors={inputErrors && inputErrors['inputUser.MiddleName']}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="text" 
                                 placeholder="Enter your last name" 
@@ -93,12 +110,14 @@ const Register = () => {
                                 name="lastName"
                                 label="Last Name"
                                 value={user.lastName}
+                                errors={inputErrors && inputErrors['inputUser.LastName']}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="date" 
                                 required={true}
                                 name="birthDate"
                                 label="Birthdate"
                                 value={user.birthDate}
+                                errors={inputErrors && inputErrors['inputUser.BirthDate']}
                                 onValueChangedHandler={onValueChange} />
                 </section>
                 
