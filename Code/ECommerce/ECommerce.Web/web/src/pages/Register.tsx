@@ -12,7 +12,7 @@ import { RegisterUserRequest } from "../models/requests/RegisterUserRequest";
 import InputField from "../components/InputField";
 
 //Utilities
-import { STRING_EMPTY } from "../utils/Constants";
+import { REGISTER_URL, STRING_EMPTY } from "../utils/Constants";
 import { GetErrorByName } from "../utils/Common";
 
 const Register = () => {
@@ -21,7 +21,6 @@ const Register = () => {
     const[confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
     const[inputErrors, setInputErrors] = useState();
     
-
     //onValueChange will execute once the InputFields value is changed
     //It will set a value in the properties of user hook
     const onValueChange = (e:any) => {
@@ -40,7 +39,7 @@ const Register = () => {
         //Set default value for register user
         request.inputUser.role = "User";
         request.inputUser.status = -1;
-        await axiosAPI.post("User/RegisterUser",  /* API Url */
+        await axiosAPI.post(REGISTER_URL,  /* API Url */
                             JSON.stringify(request) /* Request of Body */
                             )
                             .then(res => {
@@ -48,8 +47,12 @@ const Register = () => {
                                     console.log(res.data);
                             })
                             .catch(err => {
-                                if(err.response.data.errors !== null || err.response.data.errors !== undefined)
+                                if(err.response.data.errors != null) /* Response Error or Validation Required */ 
                                     setInputErrors(err.response.data.errors);
+                                else if (err.response.data != STRING_EMPTY) /* Expected Error */
+                                    console.log(err.response.data)
+                                else /* Unexpected Error */
+                                    console.log(err.message);
                             });
     }
 
