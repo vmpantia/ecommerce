@@ -14,6 +14,7 @@ import InputField from "../components/InputField";
 //Utilities
 import { REGISTER_URL, STRING_EMPTY } from "../utils/Constants";
 import { GetErrorByName } from "../utils/Common";
+import ActionButton from "../components/ActionButton";
 
 const Register = () => {
     //React Hooks
@@ -135,8 +136,8 @@ const Register = () => {
                 </section>
                 
                 <section className='w-full flex justify-end mt-4'>
-                    <button className='py-1.5 px-4 mr-2 text-sm bg-blue-600 rounded text-white' onClick={onRegisterClick}>Register</button>
-                    <button className='py-1.5 px-4 text-sm bg-red-600 rounded text-white'>Back</button>
+                    <ActionButton type="primary" label="Register" onButtonClickedHandler={onRegisterClick} />
+                    <ActionButton type="secondary" label="Back" onButtonClickedHandler={onRegisterClick} />
                 </section>
             </section>
         </div>

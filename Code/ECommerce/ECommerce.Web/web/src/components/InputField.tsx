@@ -2,12 +2,14 @@ import { useEffect, useState } from "react"
 
 //Properties
 import { InputFieldProps } from "../models/props/InputFieldProps"
+
+//Utilities
 import { STRING_EMPTY } from "../utils/Constants"
 
 const InputField = ({type, placeholder, required, name, label, value, errorMessage, onValueChangedHandler}:InputFieldProps) => {
 
     //defaultInputStyle: Use to set default style or className of input
-    let defaultInputStyle = "w-full px-2 py-1.5 my-2 border rounded focus:outline-none"
+    let defaultInputStyle = "w-full px-2 py-1.5 my-2 border rounded focus:outline-none "
 
     //inputStyle: Use to change the style or className of input
     const [inputStyle, setInputStyle] = useState(defaultInputStyle)
@@ -15,13 +17,13 @@ const InputField = ({type, placeholder, required, name, label, value, errorMessa
     //Run function below once errorMessage changed
     useEffect(() => {
         if(errorMessage === undefined || errorMessage === STRING_EMPTY)
-            setInputStyle(defaultInputStyle + " focus:border-blue-500 focus:ring-1 ring-blue-400")
+            setInputStyle(defaultInputStyle + "focus:border-blue-500 focus:ring-1 ring-blue-400")
         else 
-            setInputStyle(defaultInputStyle + " border-red-500 focus:ring-1 ring-red-400")
+            setInputStyle(defaultInputStyle + "border-red-500 focus:ring-1 ring-red-400")
     }, [errorMessage])
 
     return (
-        <div className="text-sm">
+        <div>
             {/* Input Label */}
             <label className='flex'>
                 {required && <p className="text-red-500 font-medium mr-1">*</p>}
