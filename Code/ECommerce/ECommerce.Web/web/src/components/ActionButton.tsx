@@ -1,10 +1,10 @@
 //Properties
 import { ActionButtonProps } from '../models/props/ActionButtonProps'
 
-const ActionButton = ({type, label, onButtonClickedHandler}:ActionButtonProps) => {
+const ActionButton = ({icon, type, label, onButtonClickedHandler}:ActionButtonProps) => {
   
   //defaultBtnStyle: Use to set default style or className of button
-  let defaultBtnStyle = "py-1.5 px-5 mr-2 text-sm rounded "
+  let defaultBtnStyle = "inline-flex py-1.5 px-5 mr-2 text-sm rounded "
 
   const getBtnStyle = () => {
     switch(type){
@@ -29,6 +29,11 @@ const ActionButton = ({type, label, onButtonClickedHandler}:ActionButtonProps) =
 
   return (
     <button className={getBtnStyle()} onClick={onButtonClickedHandler}>
+      {icon &&
+        <div className='w-4 mr-2 mt-0.5'>
+        {icon}
+        </div>
+      }
       {label}
     </button>
   )

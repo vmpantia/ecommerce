@@ -2,7 +2,7 @@ import { useState } from "react"
 import axiosAPI from "../api/axiosAPI";
 
 //Icons
-import { UserPlusIcon } from "@heroicons/react/24/solid"
+import { TvIcon, UserPlusIcon } from "@heroicons/react/24/solid"
 
 //Models
 import { UserDTO } from "../models/dtos/UserDTO"
@@ -48,12 +48,12 @@ const Register = () => {
                                     console.log(res.data);
                             })
                             .catch(err => {
-                                if(err.response.data.errors != null) /* Response Error or Validation Required */ 
+                                if(err.response.data.errors != null) /* Response Error or Validation Required */
                                     setInputErrors(err.response.data.errors);
-                                else if (err.response.data != STRING_EMPTY) /* Expected Error */
-                                    console.log(err.response.data)
-                                else /* Unexpected Error */
-                                    console.log(err.message);
+                                else if(err.response.data != STRING_EMPTY) /* Expected Error */
+                                    console.log(err.response.data);
+                                else  /* Unexpected Error */
+                                    console.log("Error in sending a request to API. [Code: " + err.response.status +"]")
                             });
     }
 
@@ -136,7 +136,7 @@ const Register = () => {
                 </section>
                 
                 <section className='w-full flex justify-end mt-4'>
-                    <ActionButton type="primary" label="Register" onButtonClickedHandler={onRegisterClick} />
+                    <ActionButton icon={<TvIcon/>} type="primary" label="Register" onButtonClickedHandler={onRegisterClick} />
                     <ActionButton type="secondary" label="Back" onButtonClickedHandler={onRegisterClick} />
                 </section>
             </section>
