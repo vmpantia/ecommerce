@@ -6,10 +6,10 @@ import { InputFieldProps } from "../models/props/InputFieldProps"
 //Utilities
 import { STRING_EMPTY } from "../utils/Constants"
 
-const InputField = ({type, placeholder, required, name, label, value, errorMessage, onValueChangedHandler}:InputFieldProps) => {
+const InputField = ({type, placeholder, required, name, label, value, errorMessage, isDisabled, onValueChangedHandler}:InputFieldProps) => {
 
     //defaultInputStyle: Use to set default style or className of input
-    let defaultInputStyle = "w-full px-2 py-1.5 my-2 border rounded focus:outline-none "
+    let defaultInputStyle = "w-full px-2 py-1.5 my-2 border rounded disabled:bg-gray-100 focus:outline-none "
 
     //inputStyle: Use to change the style or className of input
     const [inputStyle, setInputStyle] = useState(defaultInputStyle)
@@ -36,6 +36,7 @@ const InputField = ({type, placeholder, required, name, label, value, errorMessa
                     placeholder={placeholder}
                     name={name}
                     value={value}
+                    disabled={isDisabled}
                     onChange={onValueChangedHandler} />
 
             {/* Input Error Message */}

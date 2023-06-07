@@ -20,7 +20,9 @@ const Register = () => {
     //React Hooks
     const[user, setUser] = useState({} as UserDTO);
     const[confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
+
     const[inputErrors, setInputErrors] = useState();
+    const[isLoading, setIsLoading] = useState(false);
     
     //onValueChange will execute once the InputFields value is changed
     //It will set a value in the properties of user hook
@@ -31,8 +33,21 @@ const Register = () => {
     }
 
     //onRegisterClick will execute once the Register button clicked 
+    const onRegisterClick = async () => {    
+
+    
+        setInputErrors(undefined); /* Reset Error */
+        setIsLoading(true); /* Set Loading State */
+
+        //Set timeout for registering user
+        setTimeout(async () => {
+            await registerUser();
+            setIsLoading(false);
+        }, 1000);
+    }
+
     //It will call the User/RegisterUser API to process the request
-    const onRegisterClick = async () => {
+    const registerUser = async () => {
         let request:RegisterUserRequest = { 
             inputUser:user,
             confirmPassword:confirmPassword
@@ -74,6 +89,7 @@ const Register = () => {
                                 label="Username"
                                 value={user.userName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Username")} //Error Message Properties
+                                isDisabled={isLoading}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="email" 
                                 placeholder="Enter your email" 
@@ -82,6 +98,7 @@ const Register = () => {
                                 label="Email"
                                 value={user.email}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Email")} //Error Message Properties
+                                isDisabled={isLoading}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="password" 
                                 placeholder="Enter your password" 
@@ -90,6 +107,7 @@ const Register = () => {
                                 label="Password"
                                 value={user.password}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Password")} //Error Message Properties
+                                isDisabled={isLoading}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="password" 
                                 placeholder="Enter your password" 
@@ -98,6 +116,7 @@ const Register = () => {
                                 label="Confirm Password"
                                 value={confirmPassword}
                                 errorMessage={GetErrorByName(inputErrors, "ConfirmPassword")} //Error Message Properties
+                                isDisabled={isLoading}
                                 onValueChangedHandler={(e) => setConfirmPassword(e.target.value)} />
                 </section>
                 
@@ -110,6 +129,7 @@ const Register = () => {
                                 label="First Name"
                                 value={user.firstName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.FirstName")} //Error Message Properties
+                                isDisabled={isLoading}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="text" 
                                 placeholder="Enter your middle name" 
@@ -117,6 +137,7 @@ const Register = () => {
                                 label="Middle Name"
                                 value={user.middleName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.MiddleName")} //Error Message Properties
+                                isDisabled={isLoading}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="text" 
                                 placeholder="Enter your last name" 
@@ -125,6 +146,7 @@ const Register = () => {
                                 label="Last Name"
                                 value={user.lastName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.LastName")} //Error Message Properties
+                                isDisabled={isLoading}
                                 onValueChangedHandler={onValueChange} />
                     <InputField type="date" 
                                 required={true}
@@ -132,12 +154,21 @@ const Register = () => {
                                 label="Birthdate"
                                 value={user.birthDate}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.BirthDate")} //Error Message Properties
+                                isDisabled={isLoading}
                                 onValueChangedHandler={onValueChange} />
                 </section>
                 
                 <section className='w-full flex justify-end mt-4'>
-                    <ActionButton icon={<TvIcon/>} type="primary" label="Register" onButtonClickedHandler={onRegisterClick} />
-                    <ActionButton type="secondary" label="Back" onButtonClickedHandler={onRegisterClick} />
+                    <ActionButton icon={<TvIcon/>} 
+                                    type="primary" 
+                                    label="Register"
+                                    isDisabled={isLoading} 
+                                    onButtonClickedHandler={onRegisterClick} />
+                                    
+                    <ActionButton type="secondary" 
+                                    label="Back"
+                                    isDisabled={isLoading} 
+                                    onButtonClickedHandler={onRegisterClick} />
                 </section>
             </section>
         </div>

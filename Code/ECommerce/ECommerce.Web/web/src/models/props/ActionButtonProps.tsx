@@ -4,5 +4,6 @@ export interface ActionButtonProps {
     icon?:ReactNode;
     type: "primary" | "secondary" | "success" | "warning" | "danger" | "info" | "dark" 
     label:string;
+    isDisabled:boolean;
     onButtonClickedHandler: () => void;
 }
