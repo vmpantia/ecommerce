@@ -63,7 +63,9 @@ const Register = () => {
                                     console.log(res.data);
                             })
                             .catch(err => {
-                                if(err.response.data.errors != null) /* Response Error or Validation Required */
+                                if(err.response == null) /* API not working */
+                                    console.log(err.message);
+                                else if(err.response.data.errors != null) /* Response Error or Validation Required */
                                     setInputErrors(err.response.data.errors);
                                 else if(err.response.data != STRING_EMPTY) /* Expected Error */
                                     console.log(err.response.data);
