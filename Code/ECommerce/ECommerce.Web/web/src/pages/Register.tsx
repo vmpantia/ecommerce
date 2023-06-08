@@ -35,8 +35,6 @@ const Register = () => {
 
     //onRegisterClick will execute once the Register button clicked 
     const onRegisterClick = async () => {    
-
-    
         setInputErrors(undefined); /* Reset Error */
         setIsLoading(true); /* Set Loading State */
 
@@ -61,7 +59,8 @@ const Register = () => {
                             )
                             .then(res => {
                                 if(res.status === 200)
-                                    console.log(res.data);
+                                    toast.success(res.data);
+                                
                             })
                             .catch(err => {
                                 if(err.response == null) /* API not working */
@@ -82,7 +81,7 @@ const Register = () => {
                     <UserPlusIcon className='w-6 mr-2 mt-1'/>
                     Register Account
                 </header>
-
+                {/* User details */}
                 <section className="font-medium pt-3">User Details</section>
                 <section className="mt-3 grid md:grid-cols-1 lg:grid-cols-2 gap-3">
                     <InputField type="text" 
@@ -123,6 +122,7 @@ const Register = () => {
                                 onValueChangedHandler={(e) => setConfirmPassword(e.target.value)} />
                 </section>
                 
+                {/* Personal details */}
                 <section className="font-medium pt-3">Personal Details</section>
                 <section className="mt-3 grid md:grid-cols-1 lg:grid-cols-2 gap-3">
                     <InputField type="text" 
