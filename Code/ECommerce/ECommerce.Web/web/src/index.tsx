@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ToastContainer } from 'react-toastify';
 import reportWebVitals from './reportWebVitals';
 
 //Style
 import './style.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 //Components
 import App from './App';
@@ -14,6 +16,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <App />
+    <ToastContainer theme='colored' />
   </React.StrictMode>
 );
 

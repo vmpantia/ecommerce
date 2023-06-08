@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { toast } from "react-toastify";
 import axiosAPI from "../api/axiosAPI";
 
 //Icons
@@ -64,13 +65,13 @@ const Register = () => {
                             })
                             .catch(err => {
                                 if(err.response == null) /* API not working */
-                                    console.log(err.message);
+                                    toast.error(err.message);
                                 else if(err.response.data.errors != null) /* Response Error or Validation Required */
                                     setInputErrors(err.response.data.errors);
                                 else if(err.response.data != STRING_EMPTY) /* Expected Error */
-                                    console.log(err.response.data);
+                                    toast.error(err.response.data);
                                 else  /* Unexpected Error */
-                                    console.log("Error in sending a request to API. [Code: " + err.response.status +"]")
+                                    toast.error("Error in sending a request to API. [Code: " + err.response.status +"]")
                             });
     }
 
