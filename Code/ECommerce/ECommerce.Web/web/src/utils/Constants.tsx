@@ -1,6 +1,7 @@
 export const STRING_EMPTY:string = "";
 export const BASE_URL:string = "https://localhost:7084/api/";
 export const REGISTER_URL:string = "User/RegisterUser";
+export const LOGIN_URL:string = "User/LoginUser";
 
 export const INPUT_REQUIRED_STYLE = "text-red-500 font-medium mr-1"
 export const INPUT_DEFAULT_STYLE = "w-full px-2 py-1.5 my-2 border rounded disabled:bg-gray-100 focus:outline-none ";

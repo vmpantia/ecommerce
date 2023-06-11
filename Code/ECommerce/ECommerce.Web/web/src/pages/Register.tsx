@@ -23,7 +23,7 @@ import ActionButton from "../components/ActionButton";
 
 const Register = () => {
     //React Hooks
-    const[user, setUser] = useState<UserDTO>({
+    const [user, setUser] = useState<UserDTO>({
         internalID: NIL_UUID,
         userName: STRING_EMPTY,
         email: STRING_EMPTY,
@@ -39,9 +39,9 @@ const Register = () => {
         createDate: new Date(),
         modifiedDate: undefined,
     });
-    const[confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
-    const[inputErrors, setInputErrors] = useState();
-    const[isLoading, setIsLoading] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
+    const [inputErrors, setInputErrors] = useState();
+    const [isLoading, setIsLoading] = useState(false);
     
     //onInputTextValueChange will execute once the InputTexts value is changed
     //It will set a value in the properties of user hook
