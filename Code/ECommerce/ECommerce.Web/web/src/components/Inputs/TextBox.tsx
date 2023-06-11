@@ -1,32 +1,29 @@
 import { useEffect, useState } from "react"
 
 //Properties
-import { InputFieldProps } from "../models/props/InputFieldProps"
+import { TextBoxProps } from "../../models/props/TextBoxProps"
 
 //Utilities
-import { STRING_EMPTY } from "../utils/Constants"
+import { INPUTS_DEFAULT_STYLE, INPUTS_ERROR_MESSAGE_STYLE, INPUTS_ERROR_STYLE, INPUTS_NORMAL_STYLE, INPUTS_REQUIRED_STYLE, STRING_EMPTY } from "../../utils/Constants"
 
-const InputField = ({type, placeholder, required, name, label, value, errorMessage, isDisabled, onValueChangedHandler}:InputFieldProps) => {
-
-    //defaultInputStyle: Use to set default style or className of input
-    let defaultInputStyle = "w-full px-2 py-1.5 my-2 border rounded disabled:bg-gray-100 focus:outline-none "
+const TextBox = ({type, placeholder, required, name, label, value, errorMessage, isDisabled, onValueChangedHandler}:TextBoxProps) => {
 
     //inputStyle: Use to change the style or className of input
-    const [inputStyle, setInputStyle] = useState(defaultInputStyle)
+    const [inputStyle, setInputStyle] = useState(INPUTS_DEFAULT_STYLE)
 
     //Run function below once errorMessage changed
     useEffect(() => {
         if(errorMessage === undefined || errorMessage === STRING_EMPTY)
-            setInputStyle(defaultInputStyle + "focus:border-blue-500 focus:ring-1 ring-blue-400")
+            setInputStyle(INPUTS_DEFAULT_STYLE + INPUTS_NORMAL_STYLE)
         else 
-            setInputStyle(defaultInputStyle + "border-red-500 focus:ring-1 ring-red-400")
+            setInputStyle(INPUTS_DEFAULT_STYLE + INPUTS_ERROR_STYLE)
     }, [errorMessage])
 
     return (
         <div>
             {/* Input Label */}
             <label className='flex'>
-                {required && <p className="text-red-500 font-medium mr-1">*</p>}
+                {required && <p className={INPUTS_REQUIRED_STYLE}>*</p>}
                 {label}:
             </label>
 
@@ -41,7 +38,7 @@ const InputField = ({type, placeholder, required, name, label, value, errorMessa
 
             {/* Input Error Message */}
             {errorMessage && 
-                <span className="float-right px-1.5 py-0.5 bg-red-500 text-xs text-white rounded">
+                <span className={INPUTS_ERROR_MESSAGE_STYLE}>
                     {errorMessage}
                 </span>
             }
@@ -49,4 +46,4 @@ const InputField = ({type, placeholder, required, name, label, value, errorMessa
     )
 }
 
-export default InputField
+export default TextBox

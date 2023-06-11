@@ -5,12 +5,12 @@ export interface UserDTO {
     password:string;
     role:string;
     firstName:string;
-    middleName:string;
+    middleName?:string;
     lastName:string;
     birthDate:Date;
     profile:string;
     status:number;
     statusDescription:string;
     createDate:Date;
-    modifiedDate:Date;
+    modifiedDate?:Date;
 }

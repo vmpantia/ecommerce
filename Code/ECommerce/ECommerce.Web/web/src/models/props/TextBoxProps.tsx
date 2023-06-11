@@ -1,6 +1,6 @@
-export interface InputFieldProps {
-    type:React.HTMLInputTypeAttribute | undefined;
-    placeholder?:string;
+export interface TextBoxProps {
+    type: "text" | "password" | "email" | undefined;
+    placeholder:string;
     required?:boolean;
     name:string;
     label:string;

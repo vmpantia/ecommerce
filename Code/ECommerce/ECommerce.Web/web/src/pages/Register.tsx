@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { toast } from "react-toastify";
 import axiosAPI from "../api/axiosAPI";
+import { format } from "date-fns";
 
 import { NIL as NIL_UUID } from 'uuid';
 
@@ -12,7 +13,8 @@ import { UserDTO } from "../models/dtos/UserDTO"
 import { RegisterUserRequest } from "../models/requests/RegisterUserRequest";
 
 //Components
-import InputField from "../components/InputField";
+import TextBox from "../components/Inputs/TextBox";
+import DatePicker from "../components/Inputs/DatePicker";
 
 //Utilities
 import { REGISTER_URL, STRING_EMPTY } from "../utils/Constants";
@@ -28,24 +30,32 @@ const Register = () => {
         password: STRING_EMPTY,
         role: STRING_EMPTY,
         firstName: STRING_EMPTY,
-        middleName: STRING_EMPTY,
+        middleName: undefined,
         lastName: STRING_EMPTY,
         birthDate: new Date(),
         profile: STRING_EMPTY,
         status: 0,
         statusDescription: STRING_EMPTY,
         createDate: new Date(),
-        modifiedDate: new Date(),
+        modifiedDate: undefined,
     });
     const[confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
     const[inputErrors, setInputErrors] = useState();
     const[isLoading, setIsLoading] = useState(false);
     
-    //onValueChange will execute once the InputFields value is changed
+    //onInputTextValueChange will execute once the InputTexts value is changed
     //It will set a value in the properties of user hook
-    const onValueChange = (e:any) => {
+    const onInputTextValueChange = (e:any) => {
         setUser(data => {
             return {...data, [e.target.name] : e.target.value}
+        });
+    }
+
+    //onValueChange will execute once the DatePickers value is changed
+    //It will set a value in the properties of user hook
+    const onDatePickerValueChange = (e:any) => {
+        setUser(data => {
+            return {...data, [e.target.name] : new Date(e.target.value)}
         });
     }
 
@@ -76,7 +86,6 @@ const Register = () => {
                             .then(res => {
                                 if(res.status === 200)
                                     toast.success(res.data);
-                                
                             })
                             .catch(err => {
                                 if(err.response == null) /* API not working */
@@ -100,7 +109,7 @@ const Register = () => {
                 {/* User details */}
                 <section className="font-medium pt-3">User Details</section>
                 <section className="mt-3 grid md:grid-cols-1 lg:grid-cols-2 gap-3">
-                    <InputField type="text" 
+                    <TextBox type="text" 
                                 placeholder="Enter your username" 
                                 required={true}
                                 name="userName"
@@ -108,8 +117,8 @@ const Register = () => {
                                 value={user.userName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Username")} //Error Message Properties
                                 isDisabled={isLoading}
-                                onValueChangedHandler={onValueChange} />
-                    <InputField type="email" 
+                                onValueChangedHandler={onInputTextValueChange} />
+                    <TextBox type="email" 
                                 placeholder="Enter your email" 
                                 required={true}
                                 name="email"
@@ -117,8 +126,8 @@ const Register = () => {
                                 value={user.email}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Email")} //Error Message Properties
                                 isDisabled={isLoading}
-                                onValueChangedHandler={onValueChange} />
-                    <InputField type="password" 
+                                onValueChangedHandler={onInputTextValueChange} />
+                    <TextBox type="password" 
                                 placeholder="Enter your password" 
                                 required={true}
                                 name="password"
@@ -126,8 +135,8 @@ const Register = () => {
                                 value={user.password}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Password")} //Error Message Properties
                                 isDisabled={isLoading}
-                                onValueChangedHandler={onValueChange} />
-                    <InputField type="password" 
+                                onValueChangedHandler={onInputTextValueChange} />
+                    <TextBox type="password" 
                                 placeholder="Enter your password" 
                                 required={true}
                                 name="confirmPassword"
@@ -141,7 +150,7 @@ const Register = () => {
                 {/* Personal details */}
                 <section className="font-medium pt-3">Personal Details</section>
                 <section className="mt-3 grid md:grid-cols-1 lg:grid-cols-2 gap-3">
-                    <InputField type="text" 
+                    <TextBox type="text" 
                                 placeholder="Enter your first name" 
                                 required={true}
                                 name="firstName"
@@ -149,16 +158,16 @@ const Register = () => {
                                 value={user.firstName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.FirstName")} //Error Message Properties
                                 isDisabled={isLoading}
-                                onValueChangedHandler={onValueChange} />
-                    <InputField type="text" 
+                                onValueChangedHandler={onInputTextValueChange} />
+                    <TextBox type="text" 
                                 placeholder="Enter your middle name" 
                                 name="middleName"
                                 label="Middle Name"
                                 value={user.middleName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.MiddleName")} //Error Message Properties
                                 isDisabled={isLoading}
-                                onValueChangedHandler={onValueChange} />
-                    <InputField type="text" 
+                                onValueChangedHandler={onInputTextValueChange} />
+                    <TextBox type="text" 
                                 placeholder="Enter your last name" 
                                 required={true}
                                 name="lastName"
@@ -166,15 +175,15 @@ const Register = () => {
                                 value={user.lastName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.LastName")} //Error Message Properties
                                 isDisabled={isLoading}
-                                onValueChangedHandler={onValueChange} />
-                    <InputField type="date" 
+                                onValueChangedHandler={onInputTextValueChange} />
+                    <DatePicker type="date" 
                                 required={true}
                                 name="birthDate"
-                                label="Birthdate"
-                                value={user.birthDate.toDateString()}
+                                label="Birth Date"
+                                value={user.birthDate && format(user.birthDate, 'yyy-MM-dd')}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.BirthDate")} //Error Message Properties
                                 isDisabled={isLoading}
-                                onValueChangedHandler={onValueChange} />
+                                onValueChangedHandler={onDatePickerValueChange} />
                 </section>
                 
                 <section className='w-full flex justify-end mt-4'>

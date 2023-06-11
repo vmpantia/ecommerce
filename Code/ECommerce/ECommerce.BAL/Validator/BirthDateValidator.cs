@@ -6,15 +6,16 @@ namespace ECommerce.BAL.Validator
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value != null)
-            {
-                DateTime date;
-                if(DateTime.TryParse(value.ToString(), out date))
-                    if(date >= DateTime.Today)
-                        return new ValidationResult("The Birthdate field must not be a future date.");
-                else
-                    return new ValidationResult("The Birthdate field must be valid date.");
-            }
+            DateTime date;
+            if (value == null)
+                return new ValidationResult("The Birth Date field is required.");
+
+            if(!DateTime.TryParse(value.ToString(), out date))
+                return new ValidationResult("The Birth Date field must be valid date.");
+
+            if (date >= DateTime.Today)
+                return new ValidationResult("The Birth Date field must past date.");
+
             return ValidationResult.Success;
         }
     }
