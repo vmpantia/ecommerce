@@ -19,9 +19,23 @@ import ActionButton from "../components/ActionButton";
 
 const Register = () => {
     //React Hooks
-    const[user, setUser] = useState({} as UserDTO);
+    const[user, setUser] = useState<UserDTO>({
+        internalID: STRING_EMPTY,
+        userName: STRING_EMPTY,
+        email: STRING_EMPTY,
+        password: STRING_EMPTY,
+        role: STRING_EMPTY,
+        firstName: STRING_EMPTY,
+        middleName: STRING_EMPTY,
+        lastName: STRING_EMPTY,
+        birthDate: STRING_EMPTY,
+        profile: STRING_EMPTY,
+        status: 0,
+        statusDescription: STRING_EMPTY,
+        createDate: STRING_EMPTY,
+        modifiedDate: STRING_EMPTY,
+    });
     const[confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
-
     const[inputErrors, setInputErrors] = useState();
     const[isLoading, setIsLoading] = useState(false);
     
@@ -87,7 +101,7 @@ const Register = () => {
                     <InputField type="text" 
                                 placeholder="Enter your username" 
                                 required={true}
-                                name="username"
+                                name="userName"
                                 label="Username"
                                 value={user.userName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Username")} //Error Message Properties
