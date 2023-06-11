@@ -4,26 +4,26 @@ import { useEffect, useState } from 'react'
 import { DatePickerProps } from '../../models/props/DatePickerProps'
 
 //Utilities
-import { INPUTS_DEFAULT_STYLE, INPUTS_ERROR_MESSAGE_STYLE, INPUTS_ERROR_STYLE, INPUTS_NORMAL_STYLE, INPUTS_REQUIRED_STYLE, STRING_EMPTY } from "../../utils/Constants"
+import { INPUT_DEFAULT_STYLE, INPUT_ERROR_MESSAGE_STYLE, INPUT_ERROR_STYLE, INPUT_NORMAL_STYLE, INPUT_REQUIRED_STYLE, STRING_EMPTY } from "../../utils/Constants"
 
 const DatePicker = ({type, required, name, label, value, errorMessage, isDisabled, onValueChangedHandler}:DatePickerProps) => {
 
     //datePickerStyle: Use to change the style or className of date picker
-    const [datePickerStyle, setDatePickerStyle] = useState(INPUTS_DEFAULT_STYLE)
+    const [datePickerStyle, setDatePickerStyle] = useState(INPUT_DEFAULT_STYLE)
 
     //Run function below once errorMessage changed
     useEffect(() => {
         if(errorMessage === undefined || errorMessage === STRING_EMPTY)
-            setDatePickerStyle(INPUTS_DEFAULT_STYLE + INPUTS_NORMAL_STYLE)
+            setDatePickerStyle(INPUT_DEFAULT_STYLE + INPUT_NORMAL_STYLE)
         else 
-            setDatePickerStyle(INPUTS_DEFAULT_STYLE + INPUTS_ERROR_STYLE)
+            setDatePickerStyle(INPUT_DEFAULT_STYLE + INPUT_ERROR_STYLE)
     }, [errorMessage])
 
     return (
         <div>
             {/* Date Picker Label */}
             <label className='flex'>
-                {required && <p className={INPUTS_REQUIRED_STYLE}>*</p>}
+                {required && <p className={INPUT_REQUIRED_STYLE}>*</p>}
                 {label}:
             </label>
 
@@ -37,7 +37,7 @@ const DatePicker = ({type, required, name, label, value, errorMessage, isDisable
 
             {/* Date Picker Error Message */}
             {errorMessage && 
-                <span className={INPUTS_ERROR_MESSAGE_STYLE}>
+                <span className={INPUT_ERROR_MESSAGE_STYLE}>
                     {errorMessage}
                 </span>
             }

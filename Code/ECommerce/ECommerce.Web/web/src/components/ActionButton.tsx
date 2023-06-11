@@ -1,29 +1,28 @@
 //Properties
 import { ActionButtonProps } from '../models/props/ActionButtonProps'
 
-const ActionButton = ({icon, type, label, isDisabled, onButtonClickedHandler}:ActionButtonProps) => {
-  
-  //defaultBtnStyle: Use to set default style or className of button
-  let defaultBtnStyle = "inline-flex py-1.5 px-4 mr-2 text-xs font-medium rounded "
+//Utilities
+import { BUTTON_DANGER_STYLE, BUTTON_DARK_STYLE, BUTTON_DEFAULT_STYLE, BUTTON_INFO_STYLE, BUTTON_PRIMARY_STYLE, BUTTON_SECONDARY_STYLE, BUTTON_SUCCESS_STYLE, BUTTON_WARNING_STYLE } from '../utils/Constants';
 
+const ActionButton = ({icon, type, label, isDisabled, onButtonClickedHandler}:ActionButtonProps) => {
   const getBtnStyle = () => {
     switch(type){
       case "primary":
-        return defaultBtnStyle + "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-500";
+        return BUTTON_DEFAULT_STYLE + BUTTON_PRIMARY_STYLE;
       case "secondary":
-        return defaultBtnStyle + "bg-gray-600 text-white hover:bg-gray-700 disabled:bg-gray-500";
+        return BUTTON_DEFAULT_STYLE + BUTTON_SECONDARY_STYLE;
       case "success":
-        return defaultBtnStyle + "bg-green-600 text-white hover:bg-green-700 disabled:bg-green-500";
+        return BUTTON_DEFAULT_STYLE + BUTTON_SUCCESS_STYLE;
       case "warning":
-        return defaultBtnStyle + "bg-orange-500 text-white hover:bg-orange-600 disabled:bg-orange-400";
+        return BUTTON_DEFAULT_STYLE + BUTTON_WARNING_STYLE;
       case "danger":
-        return defaultBtnStyle + "bg-red-600 text-white hover:bg-red-700 disabled:bg-red-500";
+        return BUTTON_DEFAULT_STYLE + BUTTON_DANGER_STYLE;
       case "info":
-        return defaultBtnStyle + "bg-zinc-200 hover:bg-zinc-300 disabled:bg-zinc-100";
+        return BUTTON_DEFAULT_STYLE + BUTTON_INFO_STYLE;
       case "dark":
-        return defaultBtnStyle + "bg-neutral-800 text-white hover:bg-neutral-900 disabled:bg-neutral-700";
+        return BUTTON_DEFAULT_STYLE + BUTTON_DARK_STYLE;
       default:
-        return defaultBtnStyle;
+        return BUTTON_DEFAULT_STYLE;
     }
   }
 
