@@ -7,6 +7,6 @@ namespace ECommerce.BAL.Models.Requests
     public class RegisterUserRequest
     {
         public UserDTO inputUser { get; set; }
-        [Display(Name = "Confirm Password"), MaxLength(100), ConfirmPasswordValidator] public string ConfirmPassword { get; set; }
+        [Display(Name = "Confirm Password"), Required, MaxLength(100), ConfirmPasswordValidator] public string ConfirmPassword { get; set; }
     }
 }

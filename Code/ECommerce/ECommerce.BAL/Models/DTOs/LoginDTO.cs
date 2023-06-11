@@ -1,9 +1,11 @@
-﻿namespace ECommerce.BAL.Models.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ECommerce.BAL.Models.DTOs
 {
     public class LoginDTO
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string AccessToken { get; set; }
+        [Required] public string Name { get; set; }
+        [Required] public string Email { get; set; }
+        [Required] public string AccessToken { get; set; }
     }
 }

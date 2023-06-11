@@ -1,8 +1,10 @@
-﻿namespace ECommerce.BAL.Models.Requests
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ECommerce.BAL.Models.Requests
 {
     public class LoginUserRequest
     {
-        public string LogonName { get; set; } /*It's either Username or Email*/
-        public string Password { get; set; }
+        [Required] public string LogonName { get; set; } /*It's either Username or Email*/
+        [Required] public string Password { get; set; }
     }
 }

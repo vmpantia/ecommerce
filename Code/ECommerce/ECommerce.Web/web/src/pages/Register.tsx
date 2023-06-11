@@ -2,6 +2,8 @@ import { useState } from "react"
 import { toast } from "react-toastify";
 import axiosAPI from "../api/axiosAPI";
 
+import { NIL as NIL_UUID } from 'uuid';
+
 //Icons
 import { TvIcon, UserPlusIcon } from "@heroicons/react/24/solid"
 
@@ -20,7 +22,7 @@ import ActionButton from "../components/ActionButton";
 const Register = () => {
     //React Hooks
     const[user, setUser] = useState<UserDTO>({
-        internalID: STRING_EMPTY,
+        internalID: NIL_UUID,
         userName: STRING_EMPTY,
         email: STRING_EMPTY,
         password: STRING_EMPTY,
@@ -28,12 +30,12 @@ const Register = () => {
         firstName: STRING_EMPTY,
         middleName: STRING_EMPTY,
         lastName: STRING_EMPTY,
-        birthDate: STRING_EMPTY,
+        birthDate: new Date(),
         profile: STRING_EMPTY,
         status: 0,
         statusDescription: STRING_EMPTY,
-        createDate: STRING_EMPTY,
-        modifiedDate: STRING_EMPTY,
+        createDate: new Date(),
+        modifiedDate: new Date(),
     });
     const[confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
     const[inputErrors, setInputErrors] = useState();
@@ -169,7 +171,7 @@ const Register = () => {
                                 required={true}
                                 name="birthDate"
                                 label="Birthdate"
-                                value={user.birthDate}
+                                value={user.birthDate.toDateString()}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.BirthDate")} //Error Message Properties
                                 isDisabled={isLoading}
                                 onValueChangedHandler={onValueChange} />
