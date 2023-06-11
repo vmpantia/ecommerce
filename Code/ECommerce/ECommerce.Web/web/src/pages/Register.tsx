@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { NIL as NIL_UUID } from 'uuid';
 
 //Icons
-import { TvIcon, UserPlusIcon } from "@heroicons/react/24/solid"
+import { UserPlusIcon } from "@heroicons/react/24/solid"
 
 //Models
 import { UserDTO } from "../models/dtos/UserDTO"
@@ -187,8 +187,7 @@ const Register = () => {
                 </section>
                 
                 <section className='w-full flex justify-end mt-4'>
-                    <ActionButton icon={<TvIcon/>} 
-                                    type="primary" 
+                    <ActionButton type="primary" 
                                     label="Register"
                                     isDisabled={isLoading} 
                                     onButtonClickedHandler={onRegisterClick} />
