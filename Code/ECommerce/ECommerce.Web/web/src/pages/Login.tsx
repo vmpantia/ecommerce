@@ -7,7 +7,8 @@ import { LockClosedIcon } from '@heroicons/react/24/solid'
 
 //Components
 import TextBox from '../components/Inputs/TextBox';
-import ActionButton from '../components/ActionButton';
+import ActionButton from '../components/Buttons/ActionButton';
+import LinkButton from '../components/Buttons/LinkButton';
 
 //Models
 import { LoginUserRequest } from '../models/requests/LoginUserRequest';
@@ -94,7 +95,7 @@ const Login = () => {
                                     onButtonClickedHandler={onLoginClick} />
                 </section>
                 <section className='w-full flex justify-end mt-4'>
-                    <a>Create new account</a>
+                    <LinkButton />
                 </section>
             </section>
         </div>

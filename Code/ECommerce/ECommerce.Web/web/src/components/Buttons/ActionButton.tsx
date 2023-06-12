@@ -1,8 +1,8 @@
 //Properties
-import { ActionButtonProps } from '../models/props/ActionButtonProps'
+import { ActionButtonProps } from '../../models/props/ActionButtonProps'
 
 //Utilities
-import { BUTTON_DANGER_STYLE, BUTTON_DARK_STYLE, BUTTON_DEFAULT_STYLE, BUTTON_INFO_STYLE, BUTTON_PRIMARY_STYLE, BUTTON_SECONDARY_STYLE, BUTTON_SUCCESS_STYLE, BUTTON_WARNING_STYLE } from '../utils/Constants';
+import { BUTTON_DANGER_STYLE, BUTTON_DARK_STYLE, BUTTON_DEFAULT_STYLE, BUTTON_INFO_STYLE, BUTTON_PRIMARY_STYLE, BUTTON_SECONDARY_STYLE, BUTTON_SUCCESS_STYLE, BUTTON_WARNING_STYLE } from '../../utils/Constants';
 
 const ActionButton = ({icon, type, label, isDisabled, onButtonClickedHandler}:ActionButtonProps) => {
   const getBtnStyle = () => {

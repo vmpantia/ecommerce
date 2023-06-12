@@ -19,7 +19,7 @@ import DatePicker from "../components/Inputs/DatePicker";
 //Utilities
 import { REGISTER_URL, STRING_EMPTY } from "../utils/Constants";
 import { GetErrorByName } from "../utils/Common";
-import ActionButton from "../components/ActionButton";
+import ActionButton from "../components/Buttons/ActionButton";
 
 const Register = () => {
     //React Hooks
