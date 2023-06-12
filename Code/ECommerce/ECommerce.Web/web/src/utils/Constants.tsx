@@ -10,7 +10,7 @@ export const INPUT_ERROR_STYLE = "border-red-500 focus:ring-1 ring-red-400";
 export const INPUT_ERROR_MESSAGE_STYLE = "float-right px-1.5 py-0.5 bg-red-500 text-xs text-white rounded"
 
 
-export const BUTTON_DEFAULT_STYLE = "inline-flex py-1.5 px-4 mr-2 text-xs font-medium rounded ";
+export const BUTTON_DEFAULT_STYLE = "inline-flex py-1.5 px-4 mx-2 text-xs font-medium rounded ";
 export const BUTTON_PRIMARY_STYLE = "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-500";
 export const BUTTON_SECONDARY_STYLE = "bg-gray-600 text-white hover:bg-gray-700 disabled:bg-gray-500";
 export const BUTTON_SUCCESS_STYLE = "bg-green-600 text-white hover:bg-green-700 disabled:bg-green-500";

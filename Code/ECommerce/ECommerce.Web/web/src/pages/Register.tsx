@@ -15,11 +15,12 @@ import { RegisterUserRequest } from "../models/requests/RegisterUserRequest";
 //Components
 import TextBox from "../components/Inputs/TextBox";
 import DatePicker from "../components/Inputs/DatePicker";
+import ActionButton from "../components/Buttons/ActionButton";
+import LinkButton from "../components/Buttons/LinkButton";
 
 //Utilities
 import { REGISTER_URL, STRING_EMPTY } from "../utils/Constants";
 import { GetErrorByName } from "../utils/Common";
-import ActionButton from "../components/Buttons/ActionButton";
 
 const Register = () => {
     //React Hooks
@@ -191,11 +192,9 @@ const Register = () => {
                                     label="Register"
                                     isDisabled={loadingState} 
                                     onButtonClickedHandler={onRegisterClick} />
-                                    
-                    <ActionButton type="secondary" 
-                                    label="Back"
-                                    isDisabled={loadingState} 
-                                    onButtonClickedHandler={onRegisterClick} />
+                </section>
+                <section className='w-full flex justify-end mt-2'>
+                    <LinkButton label='I already have an account' url='/login' />
                 </section>
             </section>
         </div>
