@@ -17,6 +17,7 @@ import { LoginUserRequest } from '../models/requests/LoginUserRequest';
 //Utilities
 import { LOGIN_URL, STRING_EMPTY } from '../utils/Constants';
 import { GetErrorByName } from '../utils/Common';
+import { loginUserAsync } from '../services/UserService';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -44,24 +45,18 @@ const Login = () => {
             logonName: logonName,
             password: password
         };
-        await axiosAPI.post(LOGIN_URL,
-                            JSON.stringify(request))
-                            .then(res => {
-                                if(res.status === 200) {
-                                    toast.success(res.data);
-                                    navigate("/")
-                                }
-                            })
-                            .catch(err => {
-                                if(err.response == null) /* API not working */
-                                    toast.error(err.message);
-                                else if(err.response.data.errors != null) /* Response Error or Validation Required */
-                                    setInputErrors(err.response.data.errors);
-                                else if(err.response.data != STRING_EMPTY) /* Expected Error */
-                                    toast.error(err.response.data);
-                                else  /* Unexpected Error */
-                                    toast.error("Error in sending a request to API. [Code: " + err.response.status +"]")
-                            });
+        await loginUserAsync(request)
+        .then(() => navigate("/")) // Success
+        .catch(err => { // Error
+            if(err.response == null) /* API not working */
+                toast.error(err.message);
+            else if(err.response.data.errors != null) /* Response Error or Validation Required */
+                setInputErrors(err.response.data.errors);
+            else if(err.response.data != STRING_EMPTY) /* Expected Error */
+                toast.error(err.response.data);
+            else  /* Unexpected Error */
+                toast.error("Error in sending a request to API. [Code: " + err.response.status +"]")
+        })
     }
 
     return (
