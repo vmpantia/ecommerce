@@ -95,7 +95,7 @@ const Login = () => {
                                     onButtonClickedHandler={onLoginClick} />
                 </section>
                 <section className='w-full flex justify-end mt-2'>
-                    <LinkButton label='Create new account' url='/register' />
+                    <LinkButton label='Create new account' url='/register' isDisabled={loadingState} />
                 </section>
             </section>
         </div>

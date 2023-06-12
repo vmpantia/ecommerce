@@ -194,7 +194,7 @@ const Register = () => {
                                     onButtonClickedHandler={onRegisterClick} />
                 </section>
                 <section className='w-full flex justify-end mt-2'>
-                    <LinkButton label='I already have an account' url='/login' />
+                    <LinkButton label='I already have an account' url='/login' isDisabled={loadingState} />
                 </section>
             </section>
         </div>
