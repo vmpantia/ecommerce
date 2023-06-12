@@ -41,7 +41,7 @@ const Register = () => {
     });
     const [confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
     const [inputErrors, setInputErrors] = useState();
-    const [isLoading, setIsLoading] = useState(false);
+    const [loadingState, setLoadingState] = useState(false);
     
     //onInputTextValueChange will execute once the InputTexts value is changed
     //It will set a value in the properties of user hook
@@ -62,12 +62,12 @@ const Register = () => {
     //onRegisterClick will execute once the Register button clicked 
     const onRegisterClick = async () => {    
         setInputErrors(undefined); /* Reset Error */
-        setIsLoading(true); /* Set Loading State */
+        setLoadingState(true); /* Set Loading State */
 
         //Set timeout for registering user
         setTimeout(async () => {
             await registerUser();
-            setIsLoading(false);
+            setLoadingState(false);
         }, 1000);
     }
 
@@ -116,7 +116,7 @@ const Register = () => {
                                 label="Username"
                                 value={user.userName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Username")} //Error Message Properties
-                                isDisabled={isLoading}
+                                isDisabled={loadingState}
                                 onValueChangedHandler={onInputTextValueChange} />
                     <TextBox type="email" 
                                 placeholder="Enter your email" 
@@ -125,7 +125,7 @@ const Register = () => {
                                 label="Email"
                                 value={user.email}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Email")} //Error Message Properties
-                                isDisabled={isLoading}
+                                isDisabled={loadingState}
                                 onValueChangedHandler={onInputTextValueChange} />
                     <TextBox type="password" 
                                 placeholder="Enter your password" 
@@ -134,7 +134,7 @@ const Register = () => {
                                 label="Password"
                                 value={user.password}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Password")} //Error Message Properties
-                                isDisabled={isLoading}
+                                isDisabled={loadingState}
                                 onValueChangedHandler={onInputTextValueChange} />
                     <TextBox type="password" 
                                 placeholder="Enter your password" 
@@ -143,7 +143,7 @@ const Register = () => {
                                 label="Confirm Password"
                                 value={confirmPassword}
                                 errorMessage={GetErrorByName(inputErrors, "ConfirmPassword")} //Error Message Properties
-                                isDisabled={isLoading}
+                                isDisabled={loadingState}
                                 onValueChangedHandler={(e) => setConfirmPassword(e.target.value)} />
                 </section>
                 
@@ -157,7 +157,7 @@ const Register = () => {
                                 label="First Name"
                                 value={user.firstName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.FirstName")} //Error Message Properties
-                                isDisabled={isLoading}
+                                isDisabled={loadingState}
                                 onValueChangedHandler={onInputTextValueChange} />
                     <TextBox type="text" 
                                 placeholder="Enter your middle name" 
@@ -165,7 +165,7 @@ const Register = () => {
                                 label="Middle Name"
                                 value={user.middleName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.MiddleName")} //Error Message Properties
-                                isDisabled={isLoading}
+                                isDisabled={loadingState}
                                 onValueChangedHandler={onInputTextValueChange} />
                     <TextBox type="text" 
                                 placeholder="Enter your last name" 
@@ -174,7 +174,7 @@ const Register = () => {
                                 label="Last Name"
                                 value={user.lastName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.LastName")} //Error Message Properties
-                                isDisabled={isLoading}
+                                isDisabled={loadingState}
                                 onValueChangedHandler={onInputTextValueChange} />
                     <DatePicker type="date" 
                                 required={true}
@@ -182,19 +182,19 @@ const Register = () => {
                                 label="Birth Date"
                                 value={user.birthDate && format(user.birthDate, 'yyy-MM-dd')}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.BirthDate")} //Error Message Properties
-                                isDisabled={isLoading}
+                                isDisabled={loadingState}
                                 onValueChangedHandler={onDatePickerValueChange} />
                 </section>
                 
                 <section className='w-full flex justify-end mt-4'>
                     <ActionButton type="primary" 
                                     label="Register"
-                                    isDisabled={isLoading} 
+                                    isDisabled={loadingState} 
                                     onButtonClickedHandler={onRegisterClick} />
                                     
                     <ActionButton type="secondary" 
                                     label="Back"
-                                    isDisabled={isLoading} 
+                                    isDisabled={loadingState} 
                                     onButtonClickedHandler={onRegisterClick} />
                 </section>
             </section>

@@ -19,9 +19,25 @@ import { GetErrorByName } from '../utils/Common';
 const Login = () => {
     const [logonName, setLogonName] = useState(STRING_EMPTY);
     const [password, setPassword] = useState(STRING_EMPTY);
+    const [loadingState, setLoadingState] = useState(false);
     const [inputErrors, setInputErrors] = useState();
 
     const onLoginClick = async () => {
+        setInputErrors(undefined); /* Reset Error */
+        setLoadingState(true); /* Set Loading State */
+
+        //Set timeout for registering user
+        setTimeout(async () => {
+            await loginUser();
+            setLoadingState(false);
+        }, 1000);
+    }
+
+    const onRegisterClick = async () => {
+
+    }
+
+    const loginUser = async () => {
         let request:LoginUserRequest = {
             logonName: logonName,
             password: password
@@ -43,9 +59,6 @@ const Login = () => {
                                     toast.error("Error in sending a request to API. [Code: " + err.response.status +"]")
                             });
     }
-    const onRegisterClick = async () => {
-
-    }
 
     return (
         <div className='w-full h-screen flex justify-center items-center bg-gray-100'>
@@ -57,32 +70,31 @@ const Login = () => {
                 <section className="mt-3 grid grid-cols-1 gap-3">
                     <TextBox type="text" 
                                     placeholder="Enter your username or email" 
-                                    required={false}
+                                    required={true}
                                     name="logonName"
                                     label="Logon Name"
                                     value={logonName}
                                     errorMessage={GetErrorByName(inputErrors, "LogonName")} //Error Message Properties
-                                    isDisabled={false}
+                                    isDisabled={loadingState}
                                     onValueChangedHandler={(e) => setLogonName(e.target.value)} />
                     <TextBox type="password" 
                                     placeholder="Enter your password" 
-                                    required={false}
+                                    required={true}
                                     name="password"
                                     label="Password"
                                     value={password}
                                     errorMessage={GetErrorByName(inputErrors, "Password")} //Error Message Properties
-                                    isDisabled={false}
+                                    isDisabled={loadingState}
                                     onValueChangedHandler={(e) => setPassword(e.target.value)} />
                 </section>
                 <section className='w-full flex justify-end mt-4'>
                     <ActionButton type="primary" 
                                     label="Login"
-                                    isDisabled={false} 
+                                    isDisabled={loadingState} 
                                     onButtonClickedHandler={onLoginClick} />
-                    <ActionButton type="info" 
-                                    label="Register"
-                                    isDisabled={false} 
-                                    onButtonClickedHandler={onRegisterClick} />
+                </section>
+                <section className='w-full flex justify-end mt-4'>
+                    <a>Create new account</a>
                 </section>
             </section>
         </div>
