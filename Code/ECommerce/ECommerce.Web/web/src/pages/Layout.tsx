@@ -1,9 +1,11 @@
-import React from 'react'
+//Services
+import { getClient } from '../services/UserService'
 
 const Layout = () => {
-  return (
-    <div>Layout</div>
-  )
+    let client = getClient();
+    return (
+        <div>{client.email}</div>
+    )
 }
 
 export default Layout
