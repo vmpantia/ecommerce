@@ -65,7 +65,7 @@ const Login = () => {
     }
 
     return (
-        <div className='w-full h-screen flex justify-center items-center'>
+        <div className='fixed inset-0 flex justify-center items-center bg-gray-100'>
             <section className='p-9 border rounded w-96 bg-white'>
                 <header className='w-full flex text-2xl font-medium pb-5'>
                     <LockClosedIcon className='w-6 mr-2 mt-1'/>
