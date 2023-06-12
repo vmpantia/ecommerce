@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ECommerce.Common.Constants.Messages;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECommerce.BAL.Validator
 {
@@ -8,13 +9,13 @@ namespace ECommerce.BAL.Validator
         {
             DateTime date;
             if (value == null)
-                return new ValidationResult("The Birth Date field is required.");
+                return new ValidationResult(Error.ATTR_USR_BIRTHDATE_REQUIRED);
 
             if(!DateTime.TryParse(value.ToString(), out date))
-                return new ValidationResult("The Birth Date field must be valid date.");
+                return new ValidationResult(Error.ATTR_USR_BIRTHDATE_VALID_DATE);
 
             if (date >= DateTime.Today)
-                return new ValidationResult("The Birth Date field must past date.");
+                return new ValidationResult(Error.ATTR_USR_BIRTHDATE_PAST_DATE);
 
             return ValidationResult.Success;
         }

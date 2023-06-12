@@ -8,6 +8,6 @@ namespace ECommerce.BAL.Contractors
         Task<IEnumerable<UserDTO>> GetUsersAsync();
         Task SaveUserAsync(SaveUserRequest data);
         Task RegisterUserAsync(RegisterUserRequest data);
-        LoginDTO LoginUser(LoginUserRequest request);
+        ClientDTO LoginUser(LoginUserRequest request);
     }
 }

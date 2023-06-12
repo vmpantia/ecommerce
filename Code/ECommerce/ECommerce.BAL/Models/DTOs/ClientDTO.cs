@@ -2,7 +2,7 @@
 
 namespace ECommerce.BAL.Models.DTOs
 {
-    public class LoginDTO
+    public class ClientDTO
     {
         public string Name { get; set; }
         public string Email { get; set; }

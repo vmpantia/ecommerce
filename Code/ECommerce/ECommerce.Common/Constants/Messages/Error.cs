@@ -21,6 +21,10 @@
         public const string ATTR_USR_USERNAME_EXIST = "The Username field is already exist in the system.";
         public const string ATTR_USR_EMAIL_EXIST = "The Email field is already exist in the system.";
 
+        public const string ATTR_USR_BIRTHDATE_PAST_DATE = "The Birth Date field must past date.";
+        public const string ATTR_USR_BIRTHDATE_VALID_DATE = "The Birth Date field must be valid date.";
+        public const string ATTR_USR_BIRTHDATE_REQUIRED = "The Birth Date field is required.";
+
         //Product
         public const string GET_PRDCTS_NULL = "Get products cannot be null.";
         public const string SAVE_PRDCTS_REQUEST_NULL = "Save product request cannot be null.";

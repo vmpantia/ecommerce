@@ -138,14 +138,14 @@ namespace ECommerce.BAL.Services
             //TODO: Send Activation Email
         }
 
-        public LoginDTO LoginUser(LoginUserRequest request)
+        public ClientDTO LoginUser(LoginUserRequest request)
         {
             if (request == null) /*Check if the request is null or empty*/
                 throw new Exception(Error.LOGIN_USR_REQUEST_NULL);
 
             var result = _uow.UserRepository.GetByCondition(data => (data.Username == request.LogonName ||
-                                                                   data.Email == request.LogonName) &&
-                                                                  data.Password == request.Password);
+                                                                     data.Email == request.LogonName) &&
+                                                                    data.Password == request.Password);
 
             if (!result.Any()) /*Check if user is exist based on the credentials*/
                 throw new Exception(Error.NO_DATA_FOUND);
@@ -157,8 +157,9 @@ namespace ECommerce.BAL.Services
                 throw new Exception(Error.ATTR_USR_STATUS_NOT_ENABLED);
 
             var user = result.First();
-            return new LoginDTO
+            return new ClientDTO
             {
+                Name = string.Format(Format.NAME, user.LastName, user.FirstName),
                 Email = user.Email,
                 AccessToken = _jwt.GenerateAccesToken(user)
             };
