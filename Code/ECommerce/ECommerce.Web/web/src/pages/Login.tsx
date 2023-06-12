@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import axiosAPI from '../api/axiosAPI';
 import { toast } from 'react-toastify';
 
@@ -18,11 +19,14 @@ import { LOGIN_URL, STRING_EMPTY } from '../utils/Constants';
 import { GetErrorByName } from '../utils/Common';
 
 const Login = () => {
+    const navigate = useNavigate();
+    //React Hooks
     const [logonName, setLogonName] = useState(STRING_EMPTY);
     const [password, setPassword] = useState(STRING_EMPTY);
     const [loadingState, setLoadingState] = useState(false);
     const [inputErrors, setInputErrors] = useState();
 
+    //onLoginClick will execute once the Login button clicked 
     const onLoginClick = async () => {
         setInputErrors(undefined); /* Reset Error */
         setLoadingState(true); /* Set Loading State */
@@ -34,10 +38,7 @@ const Login = () => {
         }, 1000);
     }
 
-    const onRegisterClick = async () => {
-
-    }
-
+    //It will call the User/LoginUser API to process the request
     const loginUser = async () => {
         let request:LoginUserRequest = {
             logonName: logonName,
@@ -46,8 +47,10 @@ const Login = () => {
         await axiosAPI.post(LOGIN_URL,
                             JSON.stringify(request))
                             .then(res => {
-                                if(res.status === 200)
-                                    console.log(res.data);
+                                if(res.status === 200) {
+                                    toast.success(res.data);
+                                    navigate("/")
+                                }
                             })
                             .catch(err => {
                                 if(err.response == null) /* API not working */

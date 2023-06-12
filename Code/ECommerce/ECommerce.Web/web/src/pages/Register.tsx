@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import axiosAPI from "../api/axiosAPI";
 import { format } from "date-fns";
@@ -23,6 +24,7 @@ import { REGISTER_URL, STRING_EMPTY } from "../utils/Constants";
 import { GetErrorByName } from "../utils/Common";
 
 const Register = () => {
+    const navigate = useNavigate();
     //React Hooks
     const [user, setUser] = useState<UserDTO>({
         internalID: NIL_UUID,
@@ -55,9 +57,11 @@ const Register = () => {
     //onValueChange will execute once the DatePickers value is changed
     //It will set a value in the properties of user hook
     const onDatePickerValueChange = (e:any) => {
-        setUser(data => {
-            return {...data, [e.target.name] : new Date(e.target.value)}
-        });
+        let selectedDate = new Date(e.target.value);
+        if(!isNaN(selectedDate.getTime()))
+            setUser(data => {
+                return {...data, [e.target.name] : selectedDate }
+            });
     }
 
     //onRegisterClick will execute once the Register button clicked 
@@ -85,8 +89,10 @@ const Register = () => {
                             JSON.stringify(request) /* Request of Body */
                             )
                             .then(res => {
-                                if(res.status === 200)
+                                if(res.status === 200) {
                                     toast.success(res.data);
+                                    navigate("/login")
+                                }
                             })
                             .catch(err => {
                                 if(err.response == null) /* API not working */
