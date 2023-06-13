@@ -18,7 +18,7 @@ namespace ECommerce.BAL.Extensions
                 FirstName = entity.FirstName,
                 MiddleName = entity.MiddleName,
                 LastName = entity.LastName, 
-                BirthDate = entity.BirthDate,
+                BirthDate = entity.BirthDate.ToShortDateString(),
                 Profile = entity.Profile,
                 Status = entity.Status,
                 StatusDescription = Parser.ParseStatus(entity.Status),

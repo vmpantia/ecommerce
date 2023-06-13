@@ -14,7 +14,7 @@ namespace ECommerce.BAL.Models.DTOs
         [Display(Name="First Name"), Required, MaxLength(40)] public string FirstName { get; set; }
         [Display(Name = "Middle Name"), MaxLength(40)] public string? MiddleName { get; set; }
         [Display(Name = "Last Name"), Required, MaxLength(40)] public string LastName { get; set; }
-        [BirthDateValidator] public DateTime BirthDate { get; set; }
+        [Display(Name = "Birth Date"), Required, MaxLength(11), BirthDateValidator] public string BirthDate { get; set; }
 
         //Profile
         public string? Profile { get; set; }
