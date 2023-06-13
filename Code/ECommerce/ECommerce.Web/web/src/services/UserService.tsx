@@ -32,7 +32,7 @@ export const isAuthenticated = ():boolean => {
     return token !== null;
 }
 export const getClient = ():ClientDTO => {
-    let client:ClientDTO = {} as ClientDTO;
+    let client = new ClientDTO();
 
     //Check if Authenticated
     if(isAuthenticated())

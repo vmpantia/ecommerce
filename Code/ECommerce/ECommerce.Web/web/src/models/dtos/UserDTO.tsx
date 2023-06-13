@@ -1,16 +1,20 @@
-export interface UserDTO {
-    internalID:string;
-    userName:string;
-    email:string;
-    password:string;
-    role:string;
-    firstName:string;
+import { NIL as NIL_UUID } from 'uuid';
+
+//Utilities
+import { STRING_EMPTY } from '../../utils/Constants';
+export class UserDTO {
+    internalID:string = NIL_UUID;
+    userName:string = STRING_EMPTY;
+    email:string = STRING_EMPTY;
+    password:string = STRING_EMPTY;
+    role:string = STRING_EMPTY;
+    firstName:string = STRING_EMPTY;
     middleName?:string;
-    lastName:string;
-    birthDate:Date;
-    profile:string;
-    status:number;
-    statusDescription:string;
-    createDate:Date;
+    lastName:string = STRING_EMPTY;
+    birthDate:string = STRING_EMPTY;
+    profile:string = STRING_EMPTY;
+    status:number = 0;
+    statusDescription?:string;
+    createDate:Date = new Date();
     modifiedDate?:Date;
 }

@@ -2,7 +2,6 @@ import { useState } from "react"
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import axiosAPI from "../api/axiosAPI";
-import { format } from "date-fns";
 
 import { NIL as NIL_UUID } from 'uuid';
 
@@ -26,42 +25,17 @@ import { GetErrorByName } from "../utils/Common";
 const Register = () => {
     const navigate = useNavigate();
     //React Hooks
-    const [user, setUser] = useState<UserDTO>({
-        internalID: NIL_UUID,
-        userName: STRING_EMPTY,
-        email: STRING_EMPTY,
-        password: STRING_EMPTY,
-        role: STRING_EMPTY,
-        firstName: STRING_EMPTY,
-        middleName: undefined,
-        lastName: STRING_EMPTY,
-        birthDate: new Date(),
-        profile: STRING_EMPTY,
-        status: 0,
-        statusDescription: STRING_EMPTY,
-        createDate: new Date(),
-        modifiedDate: undefined,
-    });
+    const [user, setUser] = useState(new UserDTO);
     const [confirmPassword, setConfirmPassword] = useState(STRING_EMPTY);
     const [inputErrors, setInputErrors] = useState();
     const [loadingState, setLoadingState] = useState(false);
     
-    //onInputTextValueChange will execute once the InputTexts value is changed
+    //onValueChange will execute once the TextBoxs and DatePickers value is changed
     //It will set a value in the properties of user hook
-    const onInputTextValueChange = (e:any) => {
+    const onValueChange = (e:any) => {
         setUser(data => {
             return {...data, [e.target.name] : e.target.value}
         });
-    }
-
-    //onValueChange will execute once the DatePickers value is changed
-    //It will set a value in the properties of user hook
-    const onDatePickerValueChange = (e:any) => {
-        let selectedDate = new Date(e.target.value);
-        if(!isNaN(selectedDate.getTime()))
-            setUser(data => {
-                return {...data, [e.target.name] : selectedDate }
-            });
     }
 
     //onRegisterClick will execute once the Register button clicked 
@@ -78,10 +52,10 @@ const Register = () => {
 
     //It will call the User/RegisterUser API to process the request
     const registerUser = async () => {
-        let request:RegisterUserRequest = { 
-            inputUser:user,
-            confirmPassword:confirmPassword
-        };
+        let request = new RegisterUserRequest();
+        request.inputUser = user;
+        request.confirmPassword = confirmPassword;
+
         //Set default value for register user
         request.inputUser.role = "User";
         request.inputUser.status = -1;
@@ -124,7 +98,7 @@ const Register = () => {
                                 value={user.userName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Username")} //Error Message Properties
                                 isDisabled={loadingState}
-                                onValueChangedHandler={onInputTextValueChange} />
+                                onValueChangedHandler={onValueChange} />
                     <TextBox type="email" 
                                 placeholder="Enter your email" 
                                 required={true}
@@ -133,7 +107,7 @@ const Register = () => {
                                 value={user.email}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Email")} //Error Message Properties
                                 isDisabled={loadingState}
-                                onValueChangedHandler={onInputTextValueChange} />
+                                onValueChangedHandler={onValueChange} />
                     <TextBox type="password" 
                                 placeholder="Enter your password" 
                                 required={true}
@@ -142,7 +116,7 @@ const Register = () => {
                                 value={user.password}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.Password")} //Error Message Properties
                                 isDisabled={loadingState}
-                                onValueChangedHandler={onInputTextValueChange} />
+                                onValueChangedHandler={onValueChange} />
                     <TextBox type="password" 
                                 placeholder="Enter your password" 
                                 required={true}
@@ -165,7 +139,7 @@ const Register = () => {
                                 value={user.firstName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.FirstName")} //Error Message Properties
                                 isDisabled={loadingState}
-                                onValueChangedHandler={onInputTextValueChange} />
+                                onValueChangedHandler={onValueChange} />
                     <TextBox type="text" 
                                 placeholder="Enter your middle name" 
                                 name="middleName"
@@ -173,7 +147,7 @@ const Register = () => {
                                 value={user.middleName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.MiddleName")} //Error Message Properties
                                 isDisabled={loadingState}
-                                onValueChangedHandler={onInputTextValueChange} />
+                                onValueChangedHandler={onValueChange} />
                     <TextBox type="text" 
                                 placeholder="Enter your last name" 
                                 required={true}
@@ -182,15 +156,15 @@ const Register = () => {
                                 value={user.lastName}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.LastName")} //Error Message Properties
                                 isDisabled={loadingState}
-                                onValueChangedHandler={onInputTextValueChange} />
+                                onValueChangedHandler={onValueChange} />
                     <DatePicker type="date" 
                                 required={true}
                                 name="birthDate"
                                 label="Birth Date"
-                                value={user.birthDate && format(user.birthDate, 'yyy-MM-dd')}
+                                value={user.birthDate}
                                 errorMessage={GetErrorByName(inputErrors, "inputUser.BirthDate")} //Error Message Properties
                                 isDisabled={loadingState}
-                                onValueChangedHandler={onDatePickerValueChange} />
+                                onValueChangedHandler={onValueChange} />
                 </section>
                 
                 <section className='w-full flex justify-end mt-4'>
