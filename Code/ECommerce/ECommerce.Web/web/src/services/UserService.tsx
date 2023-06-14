@@ -16,9 +16,6 @@ export const loginUserAsync = async (request:LoginUserRequest) => {
             sessionStorage.setItem("clientInformation", JSON.stringify(res.data)); 
         }
     })
-    .catch(err => { //Error
-        throw new Error(err);
-    })
 }
 
 export const logoutUser = () => {
