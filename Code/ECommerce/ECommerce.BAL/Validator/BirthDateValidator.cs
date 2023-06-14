@@ -5,19 +5,17 @@ namespace ECommerce.BAL.Validator
 {
     public class BirthDateValidator : ValidationAttribute
     {
-
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            DateTime date;
-            if (value == null || string.IsNullOrEmpty(value.ToString()))
-                return new ValidationResult(Error.ATTR_USR_BIRTHDATE_REQUIRED);
+            if (value != null)
+            {
+                DateTime date;
+                if (!DateTime.TryParse(value.ToString(), out date))
+                    return new ValidationResult(Error.ATTR_USR_BIRTHDATE_VALID_DATE);
 
-            if (!DateTime.TryParse(value.ToString(), out date))
-                return new ValidationResult(Error.ATTR_USR_BIRTHDATE_VALID_DATE);
-
-            if (date >= DateTime.Today)
-                return new ValidationResult(Error.ATTR_USR_BIRTHDATE_PAST_DATE);
-
+                if (date >= DateTime.Today)
+                    return new ValidationResult(Error.ATTR_USR_BIRTHDATE_PAST_DATE);
+            }
             return ValidationResult.Success;
         }
     }
