@@ -18,17 +18,20 @@ namespace ECommerce.BAL.Services
         private readonly IEmailUtil _email;
         private readonly IJwtUtil _jwt;
         private readonly IValidateUtil _validate;
+        private readonly IPasswordUtil _password;
         public UserService(IUnitOfWork uow, 
                             IFileUtil file, 
                             IEmailUtil email,
                             IJwtUtil jwt,
-                            IValidateUtil validate)
+                            IValidateUtil validate,
+                            IPasswordUtil password)
         {
             _uow = uow;
             _file = file;
             _email = email;
             _jwt = jwt;
             _validate = validate;
+            _password = password;
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsersAsync()
@@ -73,7 +76,7 @@ namespace ECommerce.BAL.Services
                         InternalID = internalID,
                         Username = request.inputUser.Username,
                         Email = request.inputUser.Email,
-                        Password = request.inputUser.Password,
+                        Password = _password.ParsePassword(request.inputUser.Password, true),
                         Role = request.inputUser.Role,
                         FirstName = request.inputUser.FirstName,
                         MiddleName = request.inputUser.MiddleName,
@@ -92,7 +95,7 @@ namespace ECommerce.BAL.Services
                             //request.inputUser.InternalID,
                             request.inputUser.Username,
                             request.inputUser.Email,
-                            request.inputUser.Password,
+                            Password = _password.ParsePassword(request.inputUser.Password, true),
                             request.inputUser.Role,
                             request.inputUser.FirstName,
                             request.inputUser.MiddleName,
@@ -122,7 +125,7 @@ namespace ECommerce.BAL.Services
                 InternalID = Guid.NewGuid(),
                 Username = request.inputUser.Username,
                 Email = request.inputUser.Email,
-                Password = request.inputUser.Password,
+                Password = _password.ParsePassword(request.inputUser.Password, true),
                 Role = "User",
                 FirstName = request.inputUser.FirstName,
                 MiddleName = request.inputUser.MiddleName,
@@ -145,7 +148,7 @@ namespace ECommerce.BAL.Services
 
             var result = _uow.UserRepository.GetByCondition(data => (data.Username == request.LogonName ||
                                                                      data.Email == request.LogonName) &&
-                                                                    data.Password == request.Password);
+                                                                     data.Password == _password.ParsePassword(request.Password, true));
 
             if (!result.Any()) /*Check if user is exist based on the credentials*/
                 throw new Exception(Error.NO_DATA_FOUND);
