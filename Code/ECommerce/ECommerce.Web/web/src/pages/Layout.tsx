@@ -1,8 +1,20 @@
-//Services
+//Icons
 import { UserIcon } from '@heroicons/react/24/solid';
-import { getClient } from '../services/UserService'
+
+//Services
+import { getClient, isAuthenticated } from '../services/UserService'
+
+//Pages
+import Login from './Login';
 
 const Layout = () => {
+
+    //Display Login Component if not yet authenticate
+    if(!isAuthenticated()) {
+        return <Login />
+    }
+    
+    //Display Layout Component if authenticated
     let client = getClient();
     return (
         <div>
