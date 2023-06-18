@@ -1,6 +1,9 @@
-import React from 'react'
+import { Navigate } from 'react-router-dom'
+
+//Services
 import { isAuthenticated } from '../services/UserService'
-import { Navigate, Route } from 'react-router-dom'
+
+//Properties
 import { PrivateRouteProps } from '../models/props/PrivateRouteProps'
 
 const PrivateRoute = ({ children }:PrivateRouteProps) => {
